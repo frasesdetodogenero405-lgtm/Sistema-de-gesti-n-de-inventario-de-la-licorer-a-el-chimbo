@@ -74,13 +74,28 @@ namespace Sistema_Licoreria_El_Chimbo.Formularios
                 return;
             }
 
+            if (txtMotivo.Text.Length > 100)
+            {
+                MessageBox.Show("El motivo no puede superar 100 caracteres.");
+                return;
+            }
+
             int idProducto = Convert.ToInt32(cmbProducto.SelectedValue);
             string tipoMovimiento = cmbTipoMovimiento.SelectedItem.ToString();
 
             MovimientosStockNegocio negocioMovimiento = new MovimientosStockNegocio();
             int stockActualizado;
-            bool registrado = negocioMovimiento.AjustarStock(
-                idProducto, tipoMovimiento, cantidad, txtMotivo.Text, out stockActualizado);
+            bool registrado;
+            try
+            {
+                registrado = negocioMovimiento.AjustarStock(
+                    idProducto, tipoMovimiento, cantidad, txtMotivo.Text, out stockActualizado);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se pudo ajustar el stock: " + ex.Message);
+                return;
+            }
 
             if (registrado)
             {
