@@ -1,0 +1,23 @@
+@model SistemaLicoreria.Web.ModelosVista.ClienteFormularioViewModel
+@{
+    var editar = Model.id_cliente > 0;
+    ViewData["Title"] = editar ? "Editar cliente" : "Nuevo cliente";
+    ViewData["Seccion"] = "Clientes";
+}
+<section class="encabezado-pagina">
+    <div><p class="sobre-titulo">DIRECTORIO</p><h1>@(editar ? "Editar cliente" : "Agregar cliente")</h1><p class="texto-secundario">Registra sus datos de contacto.</p></div>
+    <a asp-action="Lista" class="boton-secundario">Volver al directorio</a>
+</section>
+<section class="panel panel-formulario">
+    <form asp-action="@(editar ? "Editar" : "Crear")" asp-route-id="@Model.id_cliente" method="post">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+        <input asp-for="id_cliente" type="hidden" />
+        <div class="rejilla-formulario">
+            <div class="campo-formulario campo-completo"><label asp-for="nombre_cliente"></label><input asp-for="nombre_cliente" class="form-control" autocomplete="name" /><span asp-validation-for="nombre_cliente" class="texto-error"></span></div>
+            <div class="campo-formulario"><label asp-for="telefono"></label><input asp-for="telefono" class="form-control" autocomplete="tel" /><span asp-validation-for="telefono" class="texto-error"></span></div>
+            <div class="campo-formulario"><label asp-for="direccion"></label><input asp-for="direccion" class="form-control" autocomplete="street-address" /><span asp-validation-for="direccion" class="texto-error"></span></div>
+        </div>
+        <div class="botones-formulario"><a asp-action="Lista" class="boton-secundario">Cancelar</a><button type="submit" class="boton-principal">@(editar ? "Guardar cambios" : "Registrar cliente")</button></div>
+    </form>
+</section>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

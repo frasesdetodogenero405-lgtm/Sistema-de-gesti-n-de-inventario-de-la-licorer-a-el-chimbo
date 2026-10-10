@@ -1,0 +1,42 @@
+@model SistemaLicoreria.Web.ModelosVista.VentaFormularioViewModel
+@{
+    ViewData["Title"] = "Nueva venta";
+    ViewData["Seccion"] = "Ventas";
+}
+<section class="encabezado-pagina">
+    <div><p class="sobre-titulo">OPERACIONES</p><h1>Registrar venta</h1><p class="texto-secundario">El precio se toma del catálogo y el stock se valida al guardar.</p></div>
+    <a asp-action="Lista" class="boton-secundario">Volver a ventas</a>
+</section>
+<section class="panel panel-formulario panel-formulario-ancho">
+    <form asp-action="Crear" method="post" id="formularioVenta">
+        <div asp-validation-summary="All" class="alert alert-danger"></div>
+        <div class="rejilla-formulario">
+            <div class="campo-formulario"><label asp-for="id_cliente"></label><select asp-for="id_cliente" asp-items="Model.Clientes" class="form-select"><option value="0">Selecciona un cliente</option></select><span asp-validation-for="id_cliente" class="texto-error"></span></div>
+            <div class="campo-formulario"><label asp-for="id_metodo"></label><select asp-for="id_metodo" asp-items="Model.MetodosPago" class="form-select"><option value="0">Selecciona un método</option></select><span asp-validation-for="id_metodo" class="texto-error"></span></div>
+        </div>
+        <div class="encabezado-detalles"><div><h2>Productos de la venta</h2><p>Agrega uno o varios productos.</p></div><button type="button" class="boton-secundario" id="agregarDetalle">＋ Agregar producto</button></div>
+        <div id="listaDetalles" class="lista-detalles">
+        @for (var indice = 0; indice < Model.Detalles.Count; indice++)
+        {
+            <div class="fila-detalle">
+                <div class="campo-formulario campo-producto"><label>Producto</label><select name="Detalles[@indice].id_producto" class="form-select selector-producto"><option value="0">Selecciona un producto</option>@foreach (var producto in Model.Productos) { <option value="@producto.id_producto" data-precio="@producto.precio_venta.ToString(System.Globalization.CultureInfo.InvariantCulture)" selected="@(Model.Detalles[indice].id_producto == producto.id_producto)">@producto.nombre_producto — Bs @producto.precio_venta.ToString("N2")</option> }</select></div>
+                <div class="campo-formulario campo-cantidad"><label>Cantidad</label><input name="Detalles[@indice].cantidad" class="form-control entrada-cantidad" type="number" min="1" value="@(Model.Detalles[indice].cantidad > 0 ? Model.Detalles[indice].cantidad : 1)" /></div>
+                <div class="campo-formulario campo-subtotal"><label>Subtotal</label><strong class="subtotal-detalle">Bs 0,00</strong></div>
+                <button type="button" class="boton-quitar" aria-label="Quitar producto">×</button>
+            </div>
+        }
+        </div>
+        <template id="plantillaDetalle"><div class="fila-detalle">
+            <div class="campo-formulario campo-producto"><label>Producto</label><select name="Detalles[__indice__].id_producto" class="form-select selector-producto"><option value="0">Selecciona un producto</option>@foreach (var producto in Model.Productos) { <option value="@producto.id_producto" data-precio="@producto.precio_venta.ToString(System.Globalization.CultureInfo.InvariantCulture)">@producto.nombre_producto — Bs @producto.precio_venta.ToString("N2")</option> }</select></div>
+            <div class="campo-formulario campo-cantidad"><label>Cantidad</label><input name="Detalles[__indice__].cantidad" class="form-control entrada-cantidad" type="number" min="1" value="1" /></div>
+            <div class="campo-formulario campo-subtotal"><label>Subtotal</label><strong class="subtotal-detalle">Bs 0,00</strong></div>
+            <button type="button" class="boton-quitar" aria-label="Quitar producto">×</button>
+        </div></template>
+        <div class="resumen-total"><span>Total de la venta</span><strong id="totalVenta">Bs 0,00</strong></div>
+        <div class="botones-formulario"><a asp-action="Lista" class="boton-secundario">Cancelar</a><button type="submit" class="boton-principal">Guardar venta</button></div>
+    </form>
+</section>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/ventas.js" asp-append-version="true"></script>
+}

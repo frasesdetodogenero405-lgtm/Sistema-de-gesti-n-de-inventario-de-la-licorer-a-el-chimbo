@@ -1,0 +1,19 @@
+@model SistemaLicoreria.Web.ModelosVista.AccesoViewModel
+@{
+    ViewData["Title"] = "Iniciar sesión";
+}
+<section class="tarjeta-acceso">
+    <div class="marca-acceso"><span>🍾</span></div>
+    <p class="sobre-titulo texto-centro">LICORERÍA EL CHIMBO</p>
+    <h1 class="titulo-acceso">Bienvenido</h1>
+    <p class="texto-acceso">Ingresa con tu cuenta del sistema para continuar.</p>
+    <form asp-action="IniciarSesion" method="post" class="formulario-acceso">
+        <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+        <div class="campo-formulario"><label asp-for="nombre_usuario"></label><input asp-for="nombre_usuario" class="form-control" autocomplete="username" autofocus /><span asp-validation-for="nombre_usuario" class="texto-error"></span></div>
+        <div class="campo-formulario"><label asp-for="contrasena"></label><input asp-for="contrasena" class="form-control" autocomplete="current-password" /><span asp-validation-for="contrasena" class="texto-error"></span></div>
+        <button type="submit" class="boton-principal boton-acceso">Iniciar sesión</button>
+    </form>
+    <small class="aviso-acceso">Usa las credenciales de un usuario registrado.</small>
+</section>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

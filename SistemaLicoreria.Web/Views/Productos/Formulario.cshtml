@@ -1,0 +1,34 @@
+@model SistemaLicoreria.Web.ModelosVista.ProductoFormularioViewModel
+@{
+    var editar = Model.id_producto > 0;
+    ViewData["Title"] = editar ? "Editar producto" : "Nuevo producto";
+    ViewData["Seccion"] = "Productos";
+}
+<section class="encabezado-pagina">
+    <div><p class="sobre-titulo">CATÁLOGO</p><h1>@(editar ? "Editar producto" : "Agregar producto")</h1><p class="texto-secundario">Completa los datos del producto y su inventario.</p></div>
+    <a asp-action="Lista" class="boton-secundario">Volver al catálogo</a>
+</section>
+<section class="panel panel-formulario">
+    <form asp-action="@(editar ? "Editar" : "Crear")" asp-route-id="@Model.id_producto" method="post">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+        <input asp-for="id_producto" type="hidden" />
+        <div class="rejilla-formulario">
+            <div class="campo-formulario campo-completo"><label asp-for="nombre_producto"></label><input asp-for="nombre_producto" class="form-control" autocomplete="off" /><span asp-validation-for="nombre_producto" class="texto-error"></span></div>
+            <div class="campo-formulario"><label asp-for="precio_venta"></label><div class="entrada-monto"><span>Bs</span><input asp-for="precio_venta" class="form-control" type="number" min="0.01" step="0.01" /></div><span asp-validation-for="precio_venta" class="texto-error"></span></div>
+            <div class="campo-formulario"><label asp-for="id_categoria"></label><select asp-for="id_categoria" asp-items="Model.Categorias" class="form-select"><option value="0">Selecciona una categoría</option></select><span asp-validation-for="id_categoria" class="texto-error"></span></div>
+            <div class="campo-formulario"><label asp-for="id_marca"></label><select asp-for="id_marca" asp-items="Model.Marcas" class="form-select"><option value="0">Selecciona una marca</option></select><span asp-validation-for="id_marca" class="texto-error"></span></div>
+            <div class="campo-formulario"><label asp-for="stock_minimo"></label><input asp-for="stock_minimo" class="form-control" type="number" min="0" /><span asp-validation-for="stock_minimo" class="texto-error"></span></div>
+            <div class="campo-formulario"><label asp-for="stock_maximo"></label><input asp-for="stock_maximo" class="form-control" type="number" min="0" /><span asp-validation-for="stock_maximo" class="texto-error"></span></div>
+            @if (!editar)
+            {
+                <div class="campo-formulario"><label asp-for="stock_actual"></label><input asp-for="stock_actual" class="form-control" type="number" min="0" /><span asp-validation-for="stock_actual" class="texto-error"></span><small>Se registra como existencia inicial.</small></div>
+            }
+            else
+            {
+                <div class="campo-formulario"><label>Existencia actual</label><input value="@Model.stock_actual" class="form-control" readonly /><small>Para cambiar existencias usa el módulo Inventario.</small></div>
+            }
+        </div>
+        <div class="botones-formulario"><a asp-action="Lista" class="boton-secundario">Cancelar</a><button type="submit" class="boton-principal">@(editar ? "Guardar cambios" : "Crear producto")</button></div>
+    </form>
+</section>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

@@ -1,0 +1,50 @@
+@model IReadOnlyList<SistemaLicoreria.Web.Modelos.Producto>
+@{
+    ViewData["Title"] = "Productos";
+    ViewData["Seccion"] = "Productos";
+}
+<section class="encabezado-pagina">
+    <div><p class="sobre-titulo">CATÁLOGO</p><h1>Productos</h1><p class="texto-secundario">Administra los productos y sus niveles de inventario.</p></div>
+    <a asp-action="Crear" class="boton-principal">＋ Agregar producto</a>
+</section>
+@if (TempData["Mensaje"] is string mensaje) { <div class="alert alert-success">@mensaje</div> }
+@if (TempData["Error"] is string error) { <div class="alert alert-danger">@error</div> }
+<section class="panel panel-tabla">
+    <form asp-action="Lista" method="get" class="barra-busqueda">
+        <label for="busqueda">Buscar producto</label>
+        <input id="busqueda" name="busqueda" value="@ViewData["Busqueda"]" class="form-control" placeholder="Escribe el nombre del producto" />
+        <button class="boton-secundario" type="submit">Buscar</button>
+        <a asp-action="Lista" class="boton-secundario">Limpiar</a>
+    </form>
+    @if (Model.Count == 0)
+    {
+        <div class="estado-vacio"><span>◫</span><strong>No hay productos registrados</strong><small>Agrega el primero desde el botón superior.</small></div>
+    }
+    else
+    {
+        <div class="tabla-responsiva"><table class="tabla-sistema">
+            <thead><tr><th>Producto</th><th>Categoría</th><th>Marca</th><th>Precio</th><th>Existencia</th><th>Estado</th><th class="texto-derecha">Acciones</th></tr></thead>
+            <tbody>
+            @foreach (var producto in Model)
+            {
+                var inventario = producto.Inventarios.FirstOrDefault();
+                var bajo = inventario != null && inventario.stock_actual <= inventario.stock_minimo;
+                <tr>
+                    <td><strong>@producto.nombre_producto</strong></td>
+                    <td>@producto.id_categoriaNavigation.nombre_categoria</td>
+                    <td>@producto.id_marcaNavigation.nombre_marca</td>
+                    <td>Bs @producto.precio_venta.ToString("N2")</td>
+                    <td>@(inventario?.stock_actual ?? 0)</td>
+                    <td><span class="etiqueta-estado @(bajo ? "estado-bajo" : "estado-normal")">@(bajo ? "Stock bajo" : "Normal")</span></td>
+                    <td class="texto-derecha"><div class="acciones-tabla">
+                        <a asp-action="Editar" asp-route-id="@producto.id_producto" class="accion-enlace">Editar</a>
+                        <form asp-action="Eliminar" asp-route-id="@producto.id_producto" method="post" onsubmit="return confirm('¿Eliminar este producto? Se conservarán los registros que impidan su eliminación.');">
+                            <button class="accion-enlace accion-eliminar" type="submit">Eliminar</button>
+                        </form>
+                    </div></td>
+                </tr>
+            }
+            </tbody>
+        </table></div>
+    }
+</section>

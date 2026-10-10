@@ -1,4 +1,5 @@
 .vs/
+.codetools/
 **/bin/
 **/obj/
 *.user

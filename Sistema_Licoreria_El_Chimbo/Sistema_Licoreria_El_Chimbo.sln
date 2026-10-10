@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CapaDatos", "..\CapaDatos\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CapaNegocio", "..\CapaNegocio\CapaNegocio.csproj", "{F07A13A2-6C0B-46D6-A7FE-DC05F63DBA5E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaLicoreria.Web", "..\SistemaLicoreria.Web\SistemaLicoreria.Web.csproj", "{BB8C0AE8-12C8-462A-B08D-5040EF9E2514}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaLicoreria.Proxy", "..\SistemaLicoreria.Proxy\SistemaLicoreria.Proxy.csproj", "{292FED1D-1CB5-4A14-AB22-593AAC0B4EEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{F07A13A2-6C0B-46D6-A7FE-DC05F63DBA5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F07A13A2-6C0B-46D6-A7FE-DC05F63DBA5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F07A13A2-6C0B-46D6-A7FE-DC05F63DBA5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB8C0AE8-12C8-462A-B08D-5040EF9E2514}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB8C0AE8-12C8-462A-B08D-5040EF9E2514}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB8C0AE8-12C8-462A-B08D-5040EF9E2514}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB8C0AE8-12C8-462A-B08D-5040EF9E2514}.Release|Any CPU.Build.0 = Release|Any CPU
+		{292FED1D-1CB5-4A14-AB22-593AAC0B4EEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{292FED1D-1CB5-4A14-AB22-593AAC0B4EEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{292FED1D-1CB5-4A14-AB22-593AAC0B4EEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{292FED1D-1CB5-4A14-AB22-593AAC0B4EEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

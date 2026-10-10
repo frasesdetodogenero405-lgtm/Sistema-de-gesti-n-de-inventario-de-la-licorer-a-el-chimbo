@@ -1,0 +1,58 @@
+@{
+    var sesionIniciada = User.Identity?.IsAuthenticated == true;
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Licorería El Chimbo</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="@(sesionIniciada ? "" : "pagina-acceso")">
+    @if (sesionIniciada)
+    {
+        <div class="marco-aplicacion">
+            <aside class="barra-lateral">
+                <a class="marca-sistema" asp-controller="Inicio" asp-action="Tablero">
+                    <span class="marca-icono">🍾</span>
+                    <span><strong>EL CHIMBO</strong><small>Gestión de licorería</small></span>
+                </a>
+                <div class="texto-menu">MENÚ PRINCIPAL</div>
+                <nav class="navegacion">
+                    <a asp-controller="Inicio" asp-action="Tablero" class="enlace-menu"><span>▦</span> Tablero</a>
+                    <a asp-controller="Productos" asp-action="Lista" class="enlace-menu"><span>◫</span> Productos</a>
+                    <a asp-controller="Inventario" asp-action="Lista" class="enlace-menu"><span>▤</span> Inventario</a>
+                    <a asp-controller="Clientes" asp-action="Lista" class="enlace-menu"><span>♙</span> Clientes</a>
+                    <a asp-controller="Proveedores" asp-action="Lista" class="enlace-menu"><span>♧</span> Proveedores</a>
+                    <a asp-controller="Ventas" asp-action="Lista" class="enlace-menu"><span>↗</span> Ventas</a>
+                    <a asp-controller="Compras" asp-action="Lista" class="enlace-menu"><span>↙</span> Compras</a>
+                </nav>
+                <div class="pie-lateral">Sistema de gestión<br />Licorería El Chimbo</div>
+            </aside>
+
+            <div class="contenido-aplicacion">
+                <header class="barra-superior">
+                    <button class="boton-menu-movil" type="button" aria-label="Abrir menú" onclick="document.body.classList.toggle('menu-abierto')">☰</button>
+                    <div class="ruta-pagina">Sistema <span>/</span> @ViewData["Seccion"]</div>
+                    <div class="acciones-cuenta">
+                        <span class="estado-cuenta"><span class="punto-conexion"></span> @User.Identity?.Name</span>
+                        <form asp-controller="Acceso" asp-action="CerrarSesion" method="post"><button type="submit" class="boton-sesion">Salir</button></form>
+                    </div>
+                </header>
+                <main class="contenido-principal">@RenderBody()</main>
+                <footer class="pie-pagina">© @DateTime.Now.Year Licorería El Chimbo <span>•</span> Administración de inventario</footer>
+            </div>
+        </div>
+        <div class="fondo-menu" onclick="document.body.classList.remove('menu-abierto')"></div>
+    }
+    else
+    {
+        <main class="contenido-acceso">@RenderBody()</main>
+    }
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,23 +1,57 @@
 # Sistema de gestión de inventario — Licorería El Chimbo
 
-Aplicación de escritorio Windows Forms para administrar productos, inventario, compras, ventas, clientes, proveedores, usuarios y métodos de pago. Está organizada en tres capas: presentación, negocio y datos; las entidades se comparten desde `CapaEntidad`.
+El repositorio conserva la aplicación de escritorio WinForms y agrega una plataforma web en español. La web usa ASP.NET Core MVC, Entity Framework Core, SQL Server, Bootstrap 5, JavaScript y Chart.js. YARP funciona como puerta de entrada local y reenvía las solicitudes a la aplicación MVC.
+
+## Proyectos
+
+- `SistemaLicoreria.Web`: tablero, autenticación, catálogo de productos, inventario, clientes, proveedores, ventas y compras.
+- `SistemaLicoreria.Proxy`: proxy inverso YARP, que entrega la aplicación web en `http://127.0.0.1:5070`.
+- `CapaDatos`, `CapaEntidad`, `CapaNegocio` y `Sistema_Licoreria_El_Chimbo`: aplicación de escritorio existente.
+
+El contexto y los modelos de Entity Framework se generaron desde el esquema SQL actual. Las tablas y campos de negocio conservan sus nombres en español. La aplicación web no ejecuta migraciones ni modifica el esquema automáticamente.
 
 ## Requisitos
 
-- Visual Studio 2022 con la carga de trabajo **Desarrollo de escritorio de .NET**.
-- .NET Framework 4.7.2 Developer Pack.
-- SQL Server Express y una base de datos `Licoreria_El_Chimbo` con las tablas y procedimientos usados por la aplicación.
+- Visual Studio 2022 con Desarrollo web de ASP.NET y Desarrollo de escritorio de .NET.
+- SDK y runtime de .NET 8.
+- SQL Server Express con la base `Licoreria_El_Chimbo`.
+- Un usuario registrado en la tabla `Usuarios`.
 
-## Abrir y compilar
+## Iniciar en esta computadora
 
-Abre `Sistema_Licoreria_El_Chimbo\Sistema_Licoreria_El_Chimbo.sln` en Visual Studio y compila la solución. El ejecutable de depuración se genera en `Sistema_Licoreria_El_Chimbo\bin\Debug`.
+Haz doble clic en `IniciarSistema.bat`. Se abrirán dos ventanas: una para MVC y otra para YARP. La aplicación estará en `http://127.0.0.1:5070`.
 
-## Configurar SQL Server
+Para abrir la solución en Visual Studio, carga `Sistema_Licoreria_El_Chimbo\Sistema_Licoreria_El_Chimbo.sln`. Configura `SistemaLicoreria.Web` y `SistemaLicoreria.Proxy` como proyectos de inicio simultáneos; para la web, abre el proxy en el navegador.
 
-La cadena `LicoreriaDb` está en `Sistema_Licoreria_El_Chimbo\App.config`. De forma predeterminada usa la instancia local `SQLEXPRESS`, autenticación integrada de Windows y la base `Licoreria_El_Chimbo`. Si tu instancia tiene otro nombre, cambia el valor `Server` antes de compilar.
+## Conexión a SQL Server
 
-El código no incluye datos de clientes, usuarios ni una copia de la base local. La base debe existir en SQL Server antes de iniciar sesión; `Conexion.ProbarConexion()` permite comprobar la conectividad.
+La cadena local está en `SistemaLicoreria.Web\appsettings.json`:
 
-## Registro de ventas
+```text
+Server=.\SQLEXPRESS;Database=Licoreria_El_Chimbo;Trusted_Connection=True;TrustServerCertificate=True;
+```
 
-Cada venta guarda cabecera, detalles, pago, movimientos de inventario y descuento de stock dentro de una sola transacción. Si falla cualquiera de esos pasos, se revierte la operación completa para evitar ventas parciales o inventario inconsistente.
+Si la instancia o la base tienen otro nombre, cambia `LicoreriaDb`. No se incluyen registros de clientes, usuarios ni productos en GitHub. El tablero consulta ventas y compras de la base existente; los formularios web de ventas y compras guardan cabecera, detalles, existencias y movimientos en una transacción.
+
+Para preparar una computadora con una base vacía, abre SQL Server Management Studio y ejecuta `BaseDatos\CrearEsquema.sql`. Luego cambia `REEMPLAZA-ESTA-CLAVE` por una clave propia en `BaseDatos\DatosIniciales.sql` y ejecuta ese archivo para crear catálogos básicos y la primera cuenta administradora. **No ejecutes el archivo de esquema sobre la base que ya usa el negocio**: contiene instrucciones para crear tablas y se usa solo en una base nueva.
+
+## Componentes web
+
+| Tecnología | Uso |
+| --- | --- |
+| C# | Lógica del sistema |
+| ASP.NET Core MVC | Aplicación web y vistas |
+| YARP | Puerta de entrada y proxy inverso |
+| SQL Server | Datos del inventario y las operaciones |
+| Entity Framework Core | Lectura y escritura de la base de datos |
+| HTML, CSS y JavaScript | Interfaz web |
+| Bootstrap 5 | Diseño adaptable |
+| Chart.js | Gráfico de ventas y compras por mes |
+| Visual Studio 2022 | Desarrollo y ejecución |
+
+## Estado y limitaciones
+
+- La base de esta computadora se validó y responde. Para usar la web en otra máquina, primero debe instalarse SQL Server y crearse la misma base; el repositorio no incluye datos ni un respaldo.
+- El inicio de sesión web usa las cuentas existentes. El esquema heredado almacena contraseñas en texto; antes de publicar la aplicación fuera de la computadora local, se debe migrar a contraseñas protegidas y acceso HTTPS.
+- Los módulos de catálogo, inventario, clientes, proveedores, ventas, compras y tablero están disponibles en la web. Los módulos de administración de marcas, categorías, roles y permisos todavía se gestionan desde la aplicación de escritorio.
+- La solución completa se compila con MSBuild de Visual Studio. Para verificar la web por separado, compila `SistemaLicoreria.Web` y `SistemaLicoreria.Proxy`.

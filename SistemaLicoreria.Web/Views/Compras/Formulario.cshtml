@@ -1,0 +1,43 @@
+@model SistemaLicoreria.Web.ModelosVista.CompraFormularioViewModel
+@{
+    ViewData["Title"] = "Nueva compra";
+    ViewData["Seccion"] = "Compras";
+}
+<section class="encabezado-pagina">
+    <div><p class="sobre-titulo">ABASTECIMIENTO</p><h1>Registrar compra</h1><p class="texto-secundario">La compra aumenta existencias y guarda los precios dentro de una operación.</p></div>
+    <a asp-action="Lista" class="boton-secundario">Volver a compras</a>
+</section>
+<section class="panel panel-formulario panel-formulario-ancho">
+    <form asp-action="Crear" method="post" id="formularioCompra">
+        <div asp-validation-summary="All" class="alert alert-danger"></div>
+        <div class="rejilla-formulario"><div class="campo-formulario"><label asp-for="id_proveedor"></label><select asp-for="id_proveedor" asp-items="Model.Proveedores" class="form-select"><option value="0">Selecciona un proveedor</option></select><span asp-validation-for="id_proveedor" class="texto-error"></span></div></div>
+        <div class="encabezado-detalles"><div><h2>Productos de la compra</h2><p>Indica costo, cantidad y nuevo precio de venta.</p></div><button type="button" class="boton-secundario" id="agregarDetalle">＋ Agregar producto</button></div>
+        <div id="listaDetalles" class="lista-detalles">
+        @for (var indice = 0; indice < Model.Detalles.Count; indice++)
+        {
+            <div class="fila-detalle fila-compra">
+                <div class="campo-formulario campo-producto"><label>Producto</label><select name="Detalles[@indice].id_producto" class="form-select selector-producto"><option value="0">Selecciona un producto</option>@foreach (var producto in Model.Productos) { <option value="@producto.id_producto" data-precio="@producto.precio_venta.ToString(System.Globalization.CultureInfo.InvariantCulture)" selected="@(Model.Detalles[indice].id_producto == producto.id_producto)">@producto.nombre_producto</option> }</select></div>
+                <div class="campo-formulario campo-cantidad"><label>Cantidad</label><input name="Detalles[@indice].cantidad" class="form-control entrada-cantidad" type="number" min="1" value="@(Model.Detalles[indice].cantidad > 0 ? Model.Detalles[indice].cantidad : 1)" /></div>
+                <div class="campo-formulario campo-precio-compra"><label>Precio de compra</label><input name="Detalles[@indice].precio_compra" class="form-control entrada-compra" type="number" min="0.01" step="0.01" value="@(Model.Detalles[indice].precio_compra > 0 ? Model.Detalles[indice].precio_compra.ToString(System.Globalization.CultureInfo.InvariantCulture) : "")" /></div>
+                <div class="campo-formulario campo-precio-venta"><label>Precio de venta</label><input name="Detalles[@indice].precio_venta" class="form-control entrada-venta" type="number" min="0.01" step="0.01" value="@(Model.Detalles[indice].precio_venta > 0 ? Model.Detalles[indice].precio_venta.ToString(System.Globalization.CultureInfo.InvariantCulture) : "")" /></div>
+                <div class="campo-formulario campo-subtotal"><label>Subtotal</label><strong class="subtotal-detalle">Bs 0,00</strong></div>
+                <button type="button" class="boton-quitar" aria-label="Quitar producto">×</button>
+            </div>
+        }
+        </div>
+        <template id="plantillaDetalle"><div class="fila-detalle fila-compra">
+            <div class="campo-formulario campo-producto"><label>Producto</label><select name="Detalles[__indice__].id_producto" class="form-select selector-producto"><option value="0">Selecciona un producto</option>@foreach (var producto in Model.Productos) { <option value="@producto.id_producto" data-precio="@producto.precio_venta.ToString(System.Globalization.CultureInfo.InvariantCulture)">@producto.nombre_producto</option> }</select></div>
+            <div class="campo-formulario campo-cantidad"><label>Cantidad</label><input name="Detalles[__indice__].cantidad" class="form-control entrada-cantidad" type="number" min="1" value="1" /></div>
+            <div class="campo-formulario campo-precio-compra"><label>Precio de compra</label><input name="Detalles[__indice__].precio_compra" class="form-control entrada-compra" type="number" min="0.01" step="0.01" /></div>
+            <div class="campo-formulario campo-precio-venta"><label>Precio de venta</label><input name="Detalles[__indice__].precio_venta" class="form-control entrada-venta" type="number" min="0.01" step="0.01" /></div>
+            <div class="campo-formulario campo-subtotal"><label>Subtotal</label><strong class="subtotal-detalle">Bs 0,00</strong></div>
+            <button type="button" class="boton-quitar" aria-label="Quitar producto">×</button>
+        </div></template>
+        <div class="resumen-total"><span>Total de la compra</span><strong id="totalCompra">Bs 0,00</strong></div>
+        <div class="botones-formulario"><a asp-action="Lista" class="boton-secundario">Cancelar</a><button type="submit" class="boton-principal">Guardar compra</button></div>
+    </form>
+</section>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/compras.js" asp-append-version="true"></script>
+}

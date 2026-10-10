@@ -1,0 +1,94 @@
+@model SistemaLicoreria.Web.ModelosVista.TableroViewModel
+@using System.Text.Json
+@{
+    ViewData["Title"] = "Tablero";
+    ViewData["Seccion"] = "Tablero";
+}
+
+<section class="encabezado-pagina">
+    <div>
+        <p class="sobre-titulo">RESUMEN DEL NEGOCIO</p>
+        <h1>Tablero de control</h1>
+        <p class="texto-secundario">Estado general de la licorería y su inventario.</p>
+    </div>
+    <div class="fecha-actual">@DateTime.Now.ToString("dddd, dd 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("es-BO"))</div>
+</section>
+
+@if (!string.IsNullOrWhiteSpace(Model.ErrorConexion))
+{
+    <div class="alert alert-warning" role="alert"><strong>Conexión pendiente:</strong> @Model.ErrorConexion</div>
+}
+
+<section class="rejilla-indicadores" aria-label="Indicadores principales">
+    <article class="tarjeta-indicador">
+        <div class="indicador-icono indicador-azul">◫</div>
+        <div><p>Productos registrados</p><strong>@Model.CantidadProductos</strong><small>En el catálogo</small></div>
+    </article>
+    <article class="tarjeta-indicador">
+        <div class="indicador-icono indicador-ambar">!</div>
+        <div><p>Productos con stock bajo</p><strong>@Model.ProductosConStockBajo</strong><small>Requieren revisión</small></div>
+    </article>
+    <article class="tarjeta-indicador">
+        <div class="indicador-icono indicador-verde">♙</div>
+        <div><p>Clientes registrados</p><strong>@Model.CantidadClientes</strong><small>En el directorio</small></div>
+    </article>
+    <article class="tarjeta-indicador">
+        <div class="indicador-icono indicador-morado">Bs</div>
+        <div><p>Ventas del mes</p><strong>Bs @Model.VentasDelMes.ToString("N2")</strong><small>Acumulado mensual</small></div>
+    </article>
+</section>
+
+<section class="rejilla-tablero">
+    <article class="panel panel-grafica">
+        <div class="panel-encabezado">
+            <div><h2>Ventas y compras</h2><p>Comparación de los últimos seis meses</p></div>
+            <span class="etiqueta-periodo">6 meses</span>
+        </div>
+        <div class="contenedor-grafica"><canvas id="graficaMovimientos" aria-label="Gráfico mensual de ventas y compras"></canvas></div>
+    </article>
+
+    <article class="panel panel-compras">
+        <div class="panel-encabezado"><div><h2>Compras del mes</h2><p>Inversión registrada</p></div><span class="icono-panel">↙</span></div>
+        <strong class="monto-panel">Bs @Model.ComprasDelMes.ToString("N2")</strong>
+        <div class="separador"></div>
+        <p class="nota-panel">El valor se calcula a partir de las compras guardadas en el sistema.</p>
+        <a asp-controller="Productos" asp-action="Lista" class="enlace-panel">Revisar productos <span>→</span></a>
+    </article>
+</section>
+
+<section class="panel panel-tabla">
+    <div class="panel-encabezado">
+        <div><h2>Ventas recientes</h2><p>Últimos movimientos registrados</p></div>
+        <a asp-controller="Ventas" asp-action="Lista" class="boton-secundario">Ver todas</a>
+    </div>
+    @if (Model.VentasRecientes.Count == 0)
+    {
+        <div class="estado-vacio"><span>▤</span><strong>Aún no hay ventas para mostrar</strong><small>Cuando se registren ventas, aparecerán aquí.</small></div>
+    }
+    else
+    {
+        <div class="tabla-responsiva">
+            <table class="tabla-sistema">
+                <thead><tr><th>N.º de venta</th><th>Cliente</th><th>Fecha</th><th>Pago</th><th class="texto-derecha">Total</th></tr></thead>
+                <tbody>
+                @foreach (var venta in Model.VentasRecientes)
+                {
+                    <tr><td><span class="numero-venta">#@venta.Numero</span></td><td>@venta.Cliente</td><td>@venta.Fecha.ToString("dd/MM/yyyy HH:mm")</td><td>@venta.MetodoPago</td><td class="texto-derecha"><strong>Bs @venta.Total.ToString("N2")</strong></td></tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>
+
+@section Scripts {
+    <script src="~/js/vendor/chart.umd.min.js" asp-append-version="true"></script>
+    <script>
+        window.datosTablero = {
+            meses: @Html.Raw(JsonSerializer.Serialize(Model.Meses)),
+            ventas: @Html.Raw(JsonSerializer.Serialize(Model.VentasMensuales)),
+            compras: @Html.Raw(JsonSerializer.Serialize(Model.ComprasMensuales))
+        };
+    </script>
+    <script src="~/js/tablero.js" asp-append-version="true"></script>
+}

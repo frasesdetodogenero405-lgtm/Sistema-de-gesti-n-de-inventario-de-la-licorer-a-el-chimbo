@@ -1,0 +1,31 @@
+@model IReadOnlyList<SistemaLicoreria.Web.Modelos.Inventario>
+@{
+    ViewData["Title"] = "Inventario";
+    ViewData["Seccion"] = "Inventario";
+}
+<section class="encabezado-pagina">
+    <div><p class="sobre-titulo">CONTROL DE EXISTENCIAS</p><h1>Inventario</h1><p class="texto-secundario">Consulta las existencias y niveles mínimos de cada producto.</p></div>
+    <a asp-controller="Productos" asp-action="Crear" class="boton-principal">＋ Agregar producto</a>
+</section>
+<section class="rejilla-indicadores rejilla-indicadores-inventario">
+    <article class="tarjeta-indicador"><div class="indicador-icono indicador-azul">▤</div><div><p>Productos con inventario</p><strong>@Model.Count</strong></div></article>
+    <article class="tarjeta-indicador"><div class="indicador-icono indicador-ambar">!</div><div><p>Stock bajo o agotado</p><strong>@Model.Count(elemento => elemento.stock_actual <= elemento.stock_minimo)</strong></div></article>
+</section>
+<section class="panel panel-tabla">
+    <div class="panel-encabezado"><div><h2>Existencias actuales</h2><p>El stock se actualiza con ventas, compras y ajustes.</p></div></div>
+    @if (Model.Count == 0)
+    {
+        <div class="estado-vacio"><span>▤</span><strong>El inventario está vacío</strong><small>Al registrar productos, aparecerán en esta lista.</small></div>
+    }
+    else
+    {
+        <div class="tabla-responsiva"><table class="tabla-sistema">
+            <thead><tr><th>Producto</th><th>Stock mínimo</th><th>Existencia</th><th>Stock máximo</th><th>Estado</th><th class="texto-derecha">Precio de venta</th></tr></thead>
+            <tbody>@foreach (var elemento in Model)
+            {
+                var bajo = elemento.stock_actual <= elemento.stock_minimo;
+                <tr><td><strong>@elemento.id_productoNavigation.nombre_producto</strong></td><td>@elemento.stock_minimo</td><td><strong>@elemento.stock_actual</strong></td><td>@elemento.stock_maximo</td><td><span class="etiqueta-estado @(bajo ? "estado-bajo" : "estado-normal")">@(bajo ? "Reponer" : "Disponible")</span></td><td class="texto-derecha">Bs @elemento.id_productoNavigation.precio_venta.ToString("N2")</td></tr>
+            }</tbody>
+        </table></div>
+    }
+</section>
