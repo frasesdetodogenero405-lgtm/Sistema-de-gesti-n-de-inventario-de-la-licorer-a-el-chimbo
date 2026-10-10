@@ -155,7 +155,14 @@ VALUES (@id_venta, @id_metodo, @monto, @fecha_pago);", cn, transaccion))
                         }
                         catch
                         {
-                            transaccion.Rollback();
+                            try
+                            {
+                                transaccion.Rollback();
+                            }
+                            catch
+                            {
+                                // SQL Server may already have rolled back a failed transaction.
+                            }
                             throw;
                         }
                     }
