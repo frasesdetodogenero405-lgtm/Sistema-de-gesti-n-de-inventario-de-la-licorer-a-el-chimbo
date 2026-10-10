@@ -15,7 +15,6 @@ namespace Sistema_Licoreria_El_Chimbo.Formularios
     public partial class FrmCompras : Form
     {
         private ComprasNegocio comprasNegocio = new ComprasNegocio();
-        private ProductoNegocio productoNegocio = new ProductoNegocio();
 
         public FrmCompras()
         {
@@ -70,80 +69,51 @@ namespace Sistema_Licoreria_El_Chimbo.Formularios
                 return;
             }
 
-            Compras compra = new Compras();
-
-            compra.IdProveedor = Convert.ToInt32(cmbProveedor.SelectedValue);
-            compra.IdUsuario = 2;
-            compra.Fecha = dtpFecha.Value;
-            compra.Total = Convert.ToDecimal(txtTotal.Text);
-
-            bool respuesta = comprasNegocio.Registrar(compra);
-
-            if (!respuesta)
-            {
-                MessageBox.Show("No se pudo guardar la compra.");
-                return;
-            }
-
-            DetalleComprasNegocio detalleNegocio = new DetalleComprasNegocio();
-
-            bool detallesCorrectos = true;
-            List<Producto> productos = productoNegocio.Listar();
+            List<Detalle_Compras> detalles = new List<Detalle_Compras>();
 
             foreach (DataGridViewRow fila in dgvDetalleCompra.Rows)
             {
                 if (fila.IsNewRow)
                     continue;
 
-                if (fila.Tag != null)
+                int cantidad;
+                decimal precioCompra;
+                decimal precioVenta;
+                if (fila.Tag == null ||
+                    !int.TryParse(Convert.ToString(fila.Cells[1].Value), out cantidad) ||
+                    !decimal.TryParse(Convert.ToString(fila.Cells[2].Value), out precioCompra) ||
+                    !decimal.TryParse(Convert.ToString(fila.Cells[3].Value), out precioVenta))
                 {
-                    Detalle_Compras detalle = new Detalle_Compras();
-
-                    detalle.IdCompra = compra.IdCompra;
-                    detalle.IdProducto = Convert.ToInt32(fila.Tag);
-                    detalle.Cantidad = Convert.ToInt32(fila.Cells[1].Value);
-                    detalle.PrecioCompra = Convert.ToDecimal(fila.Cells[2].Value);
-
-                    bool detalleRegistrado = detalleNegocio.Registrar(detalle);
-
-                    if (!detalleRegistrado)
-                    {
-                        detallesCorrectos = false;
-                        break;
-                    }
+                    MessageBox.Show("Revise los productos, cantidades y precios de la compra.");
+                    return;
                 }
-            }
 
-            if (detallesCorrectos)
-            {
-                foreach (DataGridViewRow fila in dgvDetalleCompra.Rows)
+                detalles.Add(new Detalle_Compras
                 {
-                    if (fila.IsNewRow)
-                        continue;
-
-                    if (fila.Tag != null)
-                    {
-                        int idProducto = Convert.ToInt32(fila.Tag);
-                        decimal precioVenta = Convert.ToDecimal(fila.Cells[3].Value);
-
-                        Producto producto = productos.Find(x => x.IdProducto == idProducto);
-
-                        if (producto != null)
-                        {
-                            producto.PrecioVenta = precioVenta;
-                            productoNegocio.Editar(producto);
-                        }
-                    }
-                }
-                MessageBox.Show("Compra guardada correctamente y el stock fue actualizado.");
-
-                dgvDetalleCompra.Rows.Clear();
-                txtTotal.Text = "0.00";
+                    IdProducto = Convert.ToInt32(fila.Tag),
+                    Cantidad = cantidad,
+                    PrecioCompra = precioCompra,
+                    PrecioVenta = precioVenta
+                });
             }
-            else
+
+            Compras compra = new Compras
             {
-                MessageBox.Show("La compra se registró, pero hubo un problema al registrar el detalle.");
+                IdProveedor = Convert.ToInt32(cmbProveedor.SelectedValue),
+                IdUsuario = FrmLogin.IdUsuarioActual,
+                Fecha = dtpFecha.Value
+            };
+
+            string mensaje;
+            if (!comprasNegocio.Registrar(compra, detalles, out mensaje))
+            {
+                MessageBox.Show("No se pudo guardar la compra.\n" + mensaje);
+                return;
             }
+
+            MessageBox.Show("Compra guardada correctamente. Número de compra: " + compra.IdCompra);
+            dgvDetalleCompra.Rows.Clear();
+            txtTotal.Text = "0.00";
         }
 
         private void btnAgregar_Click(object sender, EventArgs e)

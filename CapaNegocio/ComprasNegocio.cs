@@ -13,9 +13,9 @@ namespace CapaNegocio
             return objetoDatos.Listar();
         }
 
-        public bool Registrar(Compras compra)
+        public bool Registrar(Compras compra, IList<Detalle_Compras> detalles, out string mensaje)
         {
-            return objetoDatos.Registrar(compra);
+            return objetoDatos.Registrar(compra, detalles, out mensaje);
         }
     }
 }
