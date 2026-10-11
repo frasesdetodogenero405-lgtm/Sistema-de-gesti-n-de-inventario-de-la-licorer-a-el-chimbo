@@ -1,5 +1,6 @@
 (() => {
     const boton = document.querySelector('.boton-menu-movil');
+    const botonCerrar = document.querySelector('.boton-cerrar-menu');
     const barra = document.querySelector('#barra-lateral');
     const fondo = document.querySelector('.fondo-menu');
 
@@ -31,6 +32,7 @@
     }
 
     boton.addEventListener('click', alternarMenu);
+    botonCerrar?.addEventListener('click', cerrarMenuMovil);
     fondo?.addEventListener('click', cerrarMenuMovil);
     barra.addEventListener('click', evento => {
         if (esMovil.matches && evento.target.closest('a')) cerrarMenuMovil();

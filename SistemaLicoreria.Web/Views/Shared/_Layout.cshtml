@@ -15,10 +15,13 @@
     {
         <div class="marco-aplicacion">
             <aside class="barra-lateral" id="barra-lateral">
-                <a class="marca-sistema" asp-controller="Inicio" asp-action="Tablero">
-                    <span class="marca-icono">🍾</span>
-                    <span class="texto-marca"><strong>EL CHIMBO</strong><small>Gestión de licorería</small></span>
-                </a>
+                <div class="cabecera-lateral">
+                    <a class="marca-sistema" asp-controller="Inicio" asp-action="Tablero">
+                        <span class="marca-icono">🍾</span>
+                        <span class="texto-marca"><strong>EL CHIMBO</strong><small>Gestión de licorería</small></span>
+                    </a>
+                    <button class="boton-cerrar-menu" type="button" aria-label="Cerrar menú" title="Cerrar menú">×</button>
+                </div>
                 <div class="texto-menu">MENÚ PRINCIPAL</div>
                 <nav class="navegacion">
                     <a asp-controller="Inicio" asp-action="Tablero" class="enlace-menu"><span class="icono-enlace">▦</span><span class="texto-enlace">Tablero</span></a>

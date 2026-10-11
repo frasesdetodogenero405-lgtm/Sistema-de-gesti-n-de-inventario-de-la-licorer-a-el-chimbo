@@ -13,7 +13,10 @@
 body { margin: 0; background: var(--fondo); color: var(--tinta); font-family: "Segoe UI", Arial, sans-serif; font-size: 14px; }
 a { color: inherit; }
 .marco-aplicacion { min-height: 100vh; }
-.barra-lateral { width: 246px; height: 100vh; position: fixed; inset: 0 auto 0 0; z-index: 20; display: flex; flex-direction: column; padding: 25px 17px 20px; color: #dbe2f4; background: var(--azul-oscuro); }
+.barra-lateral { width: 246px; height: 100vh; height: 100dvh; position: fixed; inset: 0 auto 0 0; z-index: 20; display: flex; flex-direction: column; overflow-y: auto; overscroll-behavior: contain; padding: 25px 17px 20px; color: #dbe2f4; background: var(--azul-oscuro); }
+.cabecera-lateral { display: flex; align-items: flex-start; justify-content: space-between; }
+.boton-cerrar-menu { display: none; flex: 0 0 32px; width: 32px; height: 32px; place-items: center; padding: 0; border: 1px solid #3b4667; border-radius: 7px; color: #dbe2f4; background: transparent; font-size: 24px; line-height: 1; cursor: pointer; }
+.boton-cerrar-menu:hover { color: #fff; background: #29365d; }
 .marca-sistema { display: flex; gap: 12px; align-items: center; padding: 3px 8px 28px; text-decoration: none; color: #fff; }
 .marca-icono { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 13px; background: #29365d; font-size: 21px; }
 .marca-sistema strong, .marca-sistema small { display: block; }
@@ -160,6 +163,8 @@ h1 { margin: 0; color: var(--tinta); font-size: clamp(24px, 3vw, 29px); font-wei
     .contenido-aplicacion { margin-left: 0; }
     .menu-abierto .barra-lateral { transform: translateX(0); }
     .menu-abierto .fondo-menu { position: fixed; inset: 0; z-index: 15; display: block; background: rgba(14, 21, 40, .45); }
+    .cabecera-lateral { align-items: flex-start; }
+    .boton-cerrar-menu { display: grid; }
     .boton-menu-movil { display: grid; color: var(--tinta); }
     .barra-superior { height: 58px; justify-content: flex-start; gap: 13px; padding: 0 17px; }
     .estado-cuenta { margin-left: auto; font-size: 10px; }
