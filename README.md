@@ -4,7 +4,7 @@ El repositorio conserva la aplicación de escritorio WinForms y agrega una plata
 
 ## Proyectos
 
-- `SistemaLicoreria.Web`: tablero, autenticación, catálogo de productos, inventario, clientes, proveedores, ventas, compras y administración de roles y permisos.
+- `SistemaLicoreria.Web`: tablero, autenticación, productos, marcas, categorías, inventario, clientes, proveedores, ventas, compras y administración de roles y permisos.
 - `SistemaLicoreria.Proxy`: proxy inverso YARP, que entrega la aplicación web en `http://127.0.0.1:5070`.
 - `CapaDatos`, `CapaEntidad`, `CapaNegocio` y `Sistema_Licoreria_El_Chimbo`: aplicación de escritorio existente.
 
@@ -55,6 +55,6 @@ Para preparar una computadora con una base vacía, abre SQL Server Management St
 
 - La base de esta computadora se validó y responde. Para usar la web en otra máquina, primero debe instalarse SQL Server y crearse la misma base; el repositorio no incluye datos ni un respaldo.
 - El inicio de sesión web usa las cuentas existentes. El esquema heredado almacena contraseñas en texto; antes de publicar la aplicación fuera de la computadora local, se debe migrar a contraseñas protegidas y acceso HTTPS.
-- Los módulos de marcas, categorías y métodos de pago continúan en la aplicación de escritorio. La web administra los roles, sus permisos y la asignación de roles a usuarios.
+- La web permite registrar, buscar, editar y eliminar marcas y categorías; impide borrar catálogos asociados a productos. Los métodos de pago continúan en la aplicación de escritorio. La web administra los roles, sus permisos y la asignación de roles a usuarios.
 - Al cambiar permisos o asignar otro rol, la persona debe cerrar y volver a iniciar sesión para que el menú muestre los accesos nuevos. La autorización del servidor consulta el rol y los permisos vigentes en la base de datos.
 - La solución completa se compila con MSBuild de Visual Studio. Para verificar la web por separado, compila `SistemaLicoreria.Web` y `SistemaLicoreria.Proxy`.

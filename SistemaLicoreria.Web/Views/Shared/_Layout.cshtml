@@ -30,6 +30,8 @@
                 <nav class="navegacion">
                     @if (Puede("Gestionar usuarios")) { <a asp-controller="Inicio" asp-action="Tablero" class="enlace-menu"><span class="icono-enlace">▦</span><span class="texto-enlace">Tablero</span></a> }
                     @if (Puede("Gestionar productos", "consultar productos")) { <a asp-controller="Productos" asp-action="Lista" class="enlace-menu"><span class="icono-enlace">◫</span><span class="texto-enlace">Productos</span></a> }
+                    @if (Puede("Gestionar marcas")) { <a asp-controller="Marcas" asp-action="Lista" class="enlace-menu"><span class="icono-enlace">🏷</span><span class="texto-enlace">Marcas</span></a> }
+                    @if (Puede("Gestionar categorías")) { <a asp-controller="Categorias" asp-action="Lista" class="enlace-menu"><span class="icono-enlace">▤</span><span class="texto-enlace">Categorías</span></a> }
                     @if (Puede("Consultar inventario", "Gestionar inventario")) { <a asp-controller="Inventario" asp-action="Lista" class="enlace-menu"><span class="icono-enlace">▤</span><span class="texto-enlace">Inventario</span></a> }
                     @if (Puede("Consultar clientes", "Gestionar clientes", "Registrar clientes")) { <a asp-controller="Clientes" asp-action="Lista" class="enlace-menu"><span class="icono-enlace">♙</span><span class="texto-enlace">Clientes</span></a> }
                     @if (Puede("Gestionar proveedores")) { <a asp-controller="Proveedores" asp-action="Lista" class="enlace-menu"><span class="icono-enlace">♧</span><span class="texto-enlace">Proveedores</span></a> }
