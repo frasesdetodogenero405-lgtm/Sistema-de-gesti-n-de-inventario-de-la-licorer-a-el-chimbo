@@ -5,7 +5,7 @@
 }
 <section class="encabezado-pagina">
     <div><p class="sobre-titulo">SEGURIDAD</p><h1>Roles y permisos</h1><p class="texto-secundario">Define qué módulos puede consultar o administrar cada tipo de usuario.</p></div>
-    <div class="acciones-tabla"><a asp-action="Usuarios" class="boton-secundario">Asignar roles a usuarios</a><a asp-action="EditarRol" class="boton-principal">＋ Crear rol</a></div>
+    <div class="acciones-tabla"><a asp-action="Usuarios" class="boton-secundario">Usuarios</a><a asp-action="CrearUsuario" class="boton-secundario">＋ Crear usuario</a><a asp-action="EditarRol" class="boton-principal">＋ Crear rol</a></div>
 </section>
 @if (TempData["Mensaje"] is string mensaje) { <div class="alert alert-success">@mensaje</div> }
 @if (TempData["Error"] is string error) { <div class="alert alert-danger">@error</div> }
