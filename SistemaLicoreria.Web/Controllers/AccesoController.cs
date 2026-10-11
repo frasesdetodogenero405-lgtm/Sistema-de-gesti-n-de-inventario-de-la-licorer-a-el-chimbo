@@ -68,10 +68,15 @@ public class AccesoController : Controller
             new ClaimsPrincipal(identidad),
             new AuthenticationProperties { IsPersistent = false, AllowRefresh = true });
 
-        if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
+        var esAdministrador = string.Equals(usuario.id_rolNavigation.nombre_rol, "Administrador", StringComparison.OrdinalIgnoreCase) ||
+            permisos.Contains("Gestionar usuarios", StringComparer.OrdinalIgnoreCase);
+        var rutaSolicitada = returnUrl?.Split('?')[0].Trim('/');
+        var esRutaInicial = string.IsNullOrEmpty(rutaSolicitada) ||
+            string.Equals(rutaSolicitada, "Inicio/Tablero", StringComparison.OrdinalIgnoreCase);
+        if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl) &&
+            (esAdministrador || !esRutaInicial))
             return LocalRedirect(returnUrl);
-        if (string.Equals(usuario.id_rolNavigation.nombre_rol, "Administrador", StringComparison.OrdinalIgnoreCase) ||
-            permisos.Contains("Gestionar usuarios", StringComparer.OrdinalIgnoreCase))
+        if (esAdministrador)
             return RedirectToAction("Tablero", "Inicio");
         if (permisos.Contains("Registrar ventas", StringComparer.OrdinalIgnoreCase) ||
             permisos.Contains("Gestionar ventas", StringComparer.OrdinalIgnoreCase))
