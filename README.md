@@ -21,9 +21,9 @@ Los permisos se guardan en `Permisos` y se validan en las acciones web del servi
 
 ## Iniciar en esta computadora
 
-Haz doble clic en `IniciarSistema.bat`. Se abrirán dos ventanas: una para MVC y otra para YARP. La aplicación estará en `http://127.0.0.1:5070`.
+Ejecuta `IniciarSistema.bat`. El archivo abre la solución en Visual Studio 2022 y levanta MVC y YARP si sus puertos están libres. La aplicación queda en `http://127.0.0.1:5070`; MVC también responde en `http://127.0.0.1:5080`. Si ya hay un proceso en uno de esos puertos, el script no inicia otro.
 
-Para abrir la solución en Visual Studio, carga `Sistema_Licoreria_El_Chimbo\Sistema_Licoreria_El_Chimbo.sln`. Configura `SistemaLicoreria.Web` y `SistemaLicoreria.Proxy` como proyectos de inicio simultáneos; para la web, abre el proxy en el navegador.
+Para depurar desde Visual Studio, configura `SistemaLicoreria.Web` y `SistemaLicoreria.Proxy` como proyectos de inicio simultáneos.
 
 ## Conexión a SQL Server
 
