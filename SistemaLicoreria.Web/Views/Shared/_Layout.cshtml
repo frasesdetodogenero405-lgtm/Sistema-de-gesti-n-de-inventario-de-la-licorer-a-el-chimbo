@@ -32,7 +32,12 @@
                     <a asp-controller="Ventas" asp-action="Lista" class="enlace-menu"><span class="icono-enlace">↗</span><span class="texto-enlace">Ventas</span></a>
                     <a asp-controller="Compras" asp-action="Lista" class="enlace-menu"><span class="icono-enlace">↙</span><span class="texto-enlace">Compras</span></a>
                 </nav>
-                <div class="pie-lateral">Sistema de gestión<br />Licorería El Chimbo</div>
+                <div class="pie-lateral">
+                    <div class="texto-pie-lateral">Sistema de gestión<br />Licorería El Chimbo</div>
+                    <form asp-controller="Acceso" asp-action="CerrarSesion" method="post">
+                        <button type="submit" class="boton-sesion-lateral"><span aria-hidden="true">↪</span> Cerrar sesión</button>
+                    </form>
+                </div>
             </aside>
 
             <div class="contenido-aplicacion">
@@ -41,7 +46,7 @@
                     <div class="ruta-pagina">Sistema <span>/</span> @ViewData["Seccion"]</div>
                     <div class="acciones-cuenta">
                         <span class="estado-cuenta"><span class="punto-conexion"></span> @User.Identity?.Name</span>
-                        <form asp-controller="Acceso" asp-action="CerrarSesion" method="post"><button type="submit" class="boton-sesion">Salir</button></form>
+                        <form asp-controller="Acceso" asp-action="CerrarSesion" method="post"><button type="submit" class="boton-sesion">Cerrar sesión</button></form>
                     </div>
                 </header>
                 <main class="contenido-principal">@RenderBody()</main>

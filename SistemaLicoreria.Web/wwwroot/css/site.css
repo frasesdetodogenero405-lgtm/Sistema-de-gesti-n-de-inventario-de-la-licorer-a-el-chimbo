@@ -30,6 +30,10 @@ a { color: inherit; }
 .enlace-menu.activo span { color: #8aa7ff; }
 .enlace-inactivo { opacity: .58; }
 .pie-lateral { margin-top: auto; padding: 16px 10px 0; border-top: 1px solid #303a59; color: #8f9ab6; font-size: 11px; line-height: 1.7; }
+.pie-lateral form { margin-top: 14px; }
+.boton-sesion-lateral { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 8px; border: 1px solid #3b4667; border-radius: 7px; color: #e1e7f5; background: #202b4b; font: inherit; font-size: 11px; cursor: pointer; }
+.boton-sesion-lateral:hover { border-color: #64729a; color: #fff; background: #29365d; }
+.boton-sesion-lateral span { font-size: 16px; }
 .contenido-aplicacion { min-height: 100vh; margin-left: 246px; display: flex; flex-direction: column; }
 .barra-superior { height: 68px; display: flex; align-items: center; justify-content: space-between; padding: 0 38px; background: var(--blanco); border-bottom: 1px solid var(--borde); }
 .ruta-pagina { color: var(--texto); font-size: 12px; }
