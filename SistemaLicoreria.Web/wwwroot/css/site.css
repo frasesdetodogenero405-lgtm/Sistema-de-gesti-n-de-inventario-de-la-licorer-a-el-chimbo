@@ -37,7 +37,8 @@ a { color: inherit; }
 .boton-sesion { padding: 6px 10px; border: 1px solid var(--borde); border-radius: 6px; color: #596378; background: #fff; font-size: 10px; cursor: pointer; }
 .boton-sesion:hover { border-color: #cbd3e4; color: var(--azul); }
 .punto-conexion { width: 7px; height: 7px; border-radius: 50%; background: #28ae7c; }
-.boton-menu-movil { display: none; border: 0; background: none; font-size: 22px; }
+.boton-menu-movil { flex: 0 0 36px; width: 36px; height: 36px; display: grid; place-items: center; padding: 0; border: 1px solid var(--borde); border-radius: 7px; color: var(--tinta); background: #fff; font-size: 19px; cursor: pointer; }
+.boton-menu-movil:hover { border-color: #cbd3e4; color: var(--azul); }
 .contenido-principal { flex: 1; width: min(100%, 1450px); margin: 0 auto; padding: 34px 38px 28px; }
 .pie-pagina { padding: 15px 38px 19px; color: #9299a9; font-size: 11px; }
 .pie-pagina span { padding: 0 5px; color: #c2c7d2; }
@@ -139,6 +140,16 @@ h1 { margin: 0; color: var(--tinta); font-size: clamp(24px, 3vw, 29px); font-wei
 .resumen-total strong { color: var(--tinta); font-size: 22px; }
 .rejilla-indicadores-inventario { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .fondo-menu { display: none; }
+@media (min-width: 761px) {
+    .barra-lateral { transition: width .2s ease, padding .2s ease; }
+    .contenido-aplicacion { transition: margin-left .2s ease; }
+    .barra-colapsada .barra-lateral { width: 76px; padding-right: 12px; padding-left: 12px; }
+    .barra-colapsada .contenido-aplicacion { margin-left: 76px; }
+    .barra-colapsada .marca-sistema { justify-content: center; padding-right: 0; padding-left: 0; }
+    .barra-colapsada .texto-marca, .barra-colapsada .texto-menu, .barra-colapsada .texto-enlace, .barra-colapsada .pie-lateral { display: none; }
+    .barra-colapsada .enlace-menu { justify-content: center; padding-right: 8px; padding-left: 8px; }
+    .barra-colapsada .icono-enlace { width: auto; }
+}
 @media (max-width: 1100px) {
     .rejilla-indicadores { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .contenido-principal { padding-right: 24px; padding-left: 24px; }
@@ -149,7 +160,7 @@ h1 { margin: 0; color: var(--tinta); font-size: clamp(24px, 3vw, 29px); font-wei
     .contenido-aplicacion { margin-left: 0; }
     .menu-abierto .barra-lateral { transform: translateX(0); }
     .menu-abierto .fondo-menu { position: fixed; inset: 0; z-index: 15; display: block; background: rgba(14, 21, 40, .45); }
-    .boton-menu-movil { display: block; color: var(--tinta); }
+    .boton-menu-movil { display: grid; color: var(--tinta); }
     .barra-superior { height: 58px; justify-content: flex-start; gap: 13px; padding: 0 17px; }
     .estado-cuenta { margin-left: auto; font-size: 10px; }
     .contenido-principal { padding: 24px 16px; }
