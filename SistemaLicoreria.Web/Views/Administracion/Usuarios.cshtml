@@ -5,7 +5,7 @@
 }
 <section class="encabezado-pagina">
     <div><p class="sobre-titulo">SEGURIDAD</p><h1>Usuarios y roles</h1><p class="texto-secundario">Asigna a cada cuenta el nivel de acceso adecuado.</p></div>
-    <a asp-action="Roles" class="boton-secundario">Volver a roles y permisos</a>
+    <div class="acciones-tabla"><a asp-action="Roles" class="boton-secundario">Volver a roles y permisos</a><a asp-action="CrearUsuario" class="boton-principal">＋ Crear usuario</a></div>
 </section>
 @if (TempData["Mensaje"] is string mensaje) { <div class="alert alert-success">@mensaje</div> }
 @if (TempData["Error"] is string error) { <div class="alert alert-danger">@error</div> }

@@ -1,0 +1,16 @@
+@model SistemaLicoreria.Web.ModelosVista.UsuarioFormularioViewModel
+@{
+    ViewData["Title"] = "Crear usuario";
+    ViewData["Seccion"] = "Administración";
+}
+<section class="encabezado-pagina"><div><p class="sobre-titulo">SEGURIDAD</p><h1>Crear usuario</h1><p class="texto-secundario">Crea una cuenta y asígnale el rol que determinará sus accesos.</p></div><a asp-action="Usuarios" class="boton-secundario">Volver a usuarios</a></section>
+<section class="panel panel-formulario"><form asp-action="CrearUsuario" method="post"><div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+    <div class="rejilla-formulario">
+        <div class="campo-formulario campo-completo"><label asp-for="nombre_usuario"></label><input asp-for="nombre_usuario" class="form-control" autocomplete="username" maxlength="100" /><span asp-validation-for="nombre_usuario" class="texto-error"></span></div>
+        <div class="campo-formulario"><label asp-for="contrasena"></label><div class="campo-contrasena"><input asp-for="contrasena" class="form-control" autocomplete="new-password" maxlength="100" /><button type="button" class="boton-mostrar-contrasena" data-mostrar-contrasena aria-label="Mostrar contraseña" aria-pressed="false"><span aria-hidden="true">👁</span></button></div><small>Usa entre 8 y 100 caracteres.</small><span asp-validation-for="contrasena" class="texto-error"></span></div>
+        <div class="campo-formulario"><label asp-for="confirmar_contrasena"></label><div class="campo-contrasena"><input asp-for="confirmar_contrasena" class="form-control" autocomplete="new-password" maxlength="100" /><button type="button" class="boton-mostrar-contrasena" data-mostrar-contrasena aria-label="Mostrar contraseña" aria-pressed="false"><span aria-hidden="true">👁</span></button></div><span asp-validation-for="confirmar_contrasena" class="texto-error"></span></div>
+        <div class="campo-formulario campo-completo"><label asp-for="id_rol"></label><select asp-for="id_rol" asp-items="Model.roles" class="form-select"><option value="0">Selecciona un rol</option></select><span asp-validation-for="id_rol" class="texto-error"></span></div>
+    </div>
+    <div class="botones-formulario"><a asp-action="Usuarios" class="boton-secundario">Cancelar</a><button type="submit" class="boton-principal">Crear cuenta</button></div>
+</form></section>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

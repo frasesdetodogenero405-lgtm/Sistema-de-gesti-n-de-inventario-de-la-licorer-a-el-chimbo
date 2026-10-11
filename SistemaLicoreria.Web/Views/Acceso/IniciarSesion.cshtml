@@ -11,7 +11,7 @@
         <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
         <div class="campo-formulario"><label asp-for="nombre_usuario"></label><input asp-for="nombre_usuario" class="form-control" autocomplete="username" autofocus /><span asp-validation-for="nombre_usuario" class="texto-error"></span></div>
-        <div class="campo-formulario"><label asp-for="contrasena"></label><input asp-for="contrasena" class="form-control" autocomplete="current-password" /><span asp-validation-for="contrasena" class="texto-error"></span></div>
+        <div class="campo-formulario"><label asp-for="contrasena"></label><div class="campo-contrasena"><input asp-for="contrasena" class="form-control" autocomplete="current-password" /><button type="button" class="boton-mostrar-contrasena" data-mostrar-contrasena aria-label="Mostrar contraseña" aria-pressed="false"><span aria-hidden="true">👁</span></button></div><span asp-validation-for="contrasena" class="texto-error"></span></div>
         <button type="submit" class="boton-principal boton-acceso">Iniciar sesión</button>
     </form>
     <small class="aviso-acceso">Usa las credenciales de un usuario registrado.</small>

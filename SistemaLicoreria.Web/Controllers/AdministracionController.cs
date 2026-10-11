@@ -83,6 +83,56 @@ public class AdministracionController : Controller
         return View(modelo);
     }
 
+    [HttpGet]
+    public async Task<IActionResult> CrearUsuario()
+    {
+        var modelo = new UsuarioFormularioViewModel
+        {
+            roles = await _baseDatos.Roles_Usuarios.AsNoTracking().OrderBy(rol => rol.nombre_rol)
+                .Select(rol => new SelectListItem(rol.nombre_rol, rol.id_rol.ToString())).ToListAsync()
+        };
+        ViewData["Title"] = "Crear usuario";
+        ViewData["Seccion"] = "Administración";
+        return View("FormularioUsuario", modelo);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CrearUsuario(UsuarioFormularioViewModel modelo)
+    {
+        modelo.nombre_usuario = (modelo.nombre_usuario ?? string.Empty).Trim();
+        if (await _baseDatos.Usuarios.AnyAsync(usuario => usuario.nombre_usuario.ToLower() == modelo.nombre_usuario.ToLower()))
+            ModelState.AddModelError(nameof(modelo.nombre_usuario), "Ya existe una cuenta con ese nombre de usuario.");
+        if (!await _baseDatos.Roles_Usuarios.AnyAsync(rol => rol.id_rol == modelo.id_rol))
+            ModelState.AddModelError(nameof(modelo.id_rol), "El rol seleccionado no existe.");
+
+        if (!ModelState.IsValid)
+        {
+            modelo.roles = await _baseDatos.Roles_Usuarios.AsNoTracking().OrderBy(rol => rol.nombre_rol)
+                .Select(rol => new SelectListItem(rol.nombre_rol, rol.id_rol.ToString(), rol.id_rol == modelo.id_rol)).ToListAsync();
+            ViewData["Title"] = "Crear usuario";
+            ViewData["Seccion"] = "Administración";
+            return View("FormularioUsuario", modelo);
+        }
+
+        _baseDatos.Usuarios.Add(new Usuario
+        {
+            nombre_usuario = modelo.nombre_usuario,
+            contrasena = modelo.contrasena,
+            id_rol = modelo.id_rol
+        });
+        try
+        {
+            await _baseDatos.SaveChangesAsync();
+            TempData["Mensaje"] = "Usuario creado. Ya puede iniciar sesión con su nombre y contraseña.";
+        }
+        catch (DbUpdateException)
+        {
+            TempData["Error"] = "No se pudo crear el usuario. Comprueba que el nombre no esté registrado.";
+        }
+        return RedirectToAction(nameof(Usuarios));
+    }
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CambiarRolUsuario(int id, int id_rol)

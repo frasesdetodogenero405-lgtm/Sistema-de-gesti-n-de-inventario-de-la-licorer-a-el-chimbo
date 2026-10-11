@@ -127,6 +127,10 @@ h1 { margin: 0; color: var(--tinta); font-size: clamp(24px, 3vw, 29px); font-wei
 .campo-formulario label { display: block; margin-bottom: 6px; color: #505a6e; font-size: 11px; font-weight: 650; }
 .campo-formulario .form-control, .campo-formulario .form-select { min-height: 39px; border-color: #dfe4ed; border-radius: 6px; color: var(--tinta); font-size: 12px; }
 .campo-formulario .form-control:focus, .campo-formulario .form-select:focus { border-color: #93a9f7; box-shadow: 0 0 0 .2rem rgba(49, 87, 213, .12); }
+.campo-contrasena { position: relative; }
+.campo-contrasena .form-control { padding-right: 44px; }
+.boton-mostrar-contrasena { position: absolute; top: 50%; right: 5px; display: grid; width: 32px; height: 30px; place-items: center; transform: translateY(-50%); border: 0; border-radius: 5px; color: #58647c; background: transparent; cursor: pointer; }
+.boton-mostrar-contrasena:hover, .boton-mostrar-contrasena:focus-visible { color: var(--azul); background: #eef2ff; outline: none; }
 .campo-formulario small { display: block; margin-top: 5px; color: #9098a8; font-size: 10px; }
 .entrada-monto { display: flex; align-items: center; }
 .entrada-monto span { padding: 10px; border: 1px solid #dfe4ed; border-right: 0; border-radius: 6px 0 0 6px; color: #7f8798; background: #f8f9fc; font-size: 11px; }
