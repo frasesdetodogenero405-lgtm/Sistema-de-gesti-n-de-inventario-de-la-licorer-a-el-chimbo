@@ -1,0 +1,41 @@
+@model SistemaLicoreria.Web.ModelosVista.UsuariosRolesViewModel
+@{
+    ViewData["Title"] = "Usuarios y roles";
+    ViewData["Seccion"] = "Administración";
+}
+<section class="encabezado-pagina">
+    <div><p class="sobre-titulo">SEGURIDAD</p><h1>Usuarios y roles</h1><p class="texto-secundario">Asigna a cada cuenta el nivel de acceso adecuado.</p></div>
+    <a asp-action="Roles" class="boton-secundario">Volver a roles y permisos</a>
+</section>
+@if (TempData["Mensaje"] is string mensaje) { <div class="alert alert-success">@mensaje</div> }
+@if (TempData["Error"] is string error) { <div class="alert alert-danger">@error</div> }
+<section class="panel panel-tabla">
+    <div class="tabla-responsiva"><table class="tabla-sistema">
+        <thead><tr><th>Usuario</th><th>Rol actual</th><th>Nuevo rol</th><th class="texto-derecha">Acción</th></tr></thead>
+        <tbody>
+        @foreach (var usuario in Model.usuarios)
+        {
+            <tr>
+                <td><strong>@usuario.nombre_usuario</strong>@if (usuario.id_usuario == Model.id_usuario_sesion) { <small class="texto-secundario">Sesión actual</small> }</td>
+                <td>@usuario.nombre_rol</td>
+                <td>
+                    @if (usuario.id_usuario != Model.id_usuario_sesion)
+                    {
+                        <form asp-action="CambiarRolUsuario" asp-route-id="@usuario.id_usuario" method="post" class="formulario-asignar-rol">
+                            <select name="id_rol" class="form-select" aria-label="Nuevo rol para @usuario.nombre_usuario">
+                                @foreach (var rol in Model.roles)
+                                {
+                                    <option value="@rol.Value" selected="@(rol.Value == usuario.id_rol.ToString() ? "selected" : null)">@rol.Text</option>
+                                }
+                            </select>
+                            <button type="submit" class="boton-secundario">Guardar</button>
+                        </form>
+                    }
+                    else { <span>—</span> }
+                </td>
+                <td class="texto-derecha">@(usuario.id_usuario == Model.id_usuario_sesion ? "No editable durante la sesión" : "")</td>
+            </tr>
+        }
+        </tbody>
+    </table></div>
+</section>

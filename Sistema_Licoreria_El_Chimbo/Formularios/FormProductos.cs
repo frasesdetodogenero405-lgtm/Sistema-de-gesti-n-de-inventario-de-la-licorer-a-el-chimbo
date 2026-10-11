@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using CapaEntidad;
 using CapaNegocio;
+using Sistema_Licoreria_El_Chimbo.Formularios;
 
 namespace Sistema_Licoreria_El_Chimbo
 {
@@ -21,6 +22,15 @@ namespace Sistema_Licoreria_El_Chimbo
             CargarCategorias();
             CargarMarcas();
             ListarProductos();
+            var puedeGestionar = PermisosSesion.Tiene("Gestionar productos");
+            button1.Visible = puedeGestionar;
+            btnEditar.Visible = puedeGestionar;
+            btnEliminar.Visible = puedeGestionar;
+            btnLimpiar.Visible = puedeGestionar;
+            txtNombreProducto.ReadOnly = !puedeGestionar;
+            txtPrecioVenta.ReadOnly = !puedeGestionar;
+            cmbCategoria.Enabled = puedeGestionar;
+            cmbMarca.Enabled = puedeGestionar;
         }
         private void CargarCategorias()
         {
@@ -52,6 +62,11 @@ namespace Sistema_Licoreria_El_Chimbo
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (!PermisosSesion.Tiene("Gestionar productos"))
+            {
+                MessageBox.Show("Tu rol no tiene permiso para registrar productos.");
+                return;
+            }
             Producto producto = new Producto();
 
             producto.NombreProducto = txtNombreProducto.Text;
@@ -93,6 +108,11 @@ namespace Sistema_Licoreria_El_Chimbo
         private void btnEliminar_Click(object sender, EventArgs e)
   
         {
+            if (!PermisosSesion.Tiene("Gestionar productos"))
+            {
+                MessageBox.Show("Tu rol no tiene permiso para eliminar productos.");
+                return;
+            }
             if (dgvProductos.CurrentRow == null)
             {
                 MessageBox.Show("Seleccione un producto para eliminar.");
@@ -141,6 +161,11 @@ namespace Sistema_Licoreria_El_Chimbo
 
         private void btnEditar_Click(object sender, EventArgs e)
         {
+            if (!PermisosSesion.Tiene("Gestionar productos"))
+            {
+                MessageBox.Show("Tu rol no tiene permiso para editar productos.");
+                return;
+            }
             if (dgvProductos.CurrentRow == null)
             {
                 MessageBox.Show("Seleccione un producto para editar.");

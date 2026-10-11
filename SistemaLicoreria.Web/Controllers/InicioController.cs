@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SistemaLicoreria.Web.Datos;
 using SistemaLicoreria.Web.ModelosVista;
+using SistemaLicoreria.Web.Seguridad;
 
 namespace SistemaLicoreria.Web.Controllers;
 
@@ -15,6 +16,7 @@ public class InicioController : Controller
         _baseDatos = baseDatos;
     }
 
+    [Permiso("Gestionar usuarios")]
     public async Task<IActionResult> Tablero()
     {
         var tablero = new TableroViewModel();

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SistemaLicoreria.Web.Datos;
 using SistemaLicoreria.Web.Modelos;
 using SistemaLicoreria.Web.ModelosVista;
+using SistemaLicoreria.Web.Seguridad;
 
 namespace SistemaLicoreria.Web.Controllers;
 
@@ -16,6 +17,7 @@ public class ProductosController : Controller
         _baseDatos = baseDatos;
     }
 
+    [Permiso("Gestionar productos", "consultar productos")]
     public async Task<IActionResult> Lista(string? busqueda)
     {
         var consulta = _baseDatos.Productos.AsNoTracking()
@@ -36,6 +38,7 @@ public class ProductosController : Controller
         return View(await consulta.OrderBy(producto => producto.nombre_producto).ToListAsync());
     }
 
+    [Permiso("Gestionar productos")]
     public async Task<IActionResult> Crear()
     {
         var modelo = new ProductoFormularioViewModel();
@@ -47,6 +50,7 @@ public class ProductosController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Permiso("Gestionar productos")]
     public async Task<IActionResult> Crear(ProductoFormularioViewModel modelo)
     {
         if (modelo.stock_maximo < modelo.stock_minimo)
@@ -83,6 +87,7 @@ public class ProductosController : Controller
         return RedirectToAction(nameof(Lista));
     }
 
+    [Permiso("Gestionar productos")]
     public async Task<IActionResult> Editar(int id)
     {
         var producto = await _baseDatos.Productos.AsNoTracking()
@@ -110,6 +115,7 @@ public class ProductosController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Permiso("Gestionar productos")]
     public async Task<IActionResult> Editar(int id, ProductoFormularioViewModel modelo)
     {
         if (id != modelo.id_producto) return BadRequest();
@@ -151,6 +157,7 @@ public class ProductosController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Permiso("Gestionar productos")]
     public async Task<IActionResult> Eliminar(int id)
     {
         var producto = await _baseDatos.Productos

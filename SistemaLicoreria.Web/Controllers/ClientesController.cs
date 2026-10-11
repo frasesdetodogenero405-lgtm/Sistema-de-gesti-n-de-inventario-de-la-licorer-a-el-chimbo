@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SistemaLicoreria.Web.Datos;
 using SistemaLicoreria.Web.Modelos;
 using SistemaLicoreria.Web.ModelosVista;
+using SistemaLicoreria.Web.Seguridad;
 
 namespace SistemaLicoreria.Web.Controllers;
 
@@ -15,6 +16,7 @@ public class ClientesController : Controller
         _baseDatos = baseDatos;
     }
 
+    [Permiso("Consultar clientes", "Gestionar clientes")]
     public async Task<IActionResult> Lista(string? busqueda)
     {
         var clientes = _baseDatos.Clientes.AsNoTracking().AsQueryable();
@@ -29,6 +31,7 @@ public class ClientesController : Controller
         return View(await clientes.OrderBy(cliente => cliente.nombre_cliente).ToListAsync());
     }
 
+    [Permiso("Registrar clientes", "Gestionar clientes")]
     public IActionResult Crear()
     {
         ViewData["Title"] = "Nuevo cliente";
@@ -38,6 +41,7 @@ public class ClientesController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Permiso("Registrar clientes", "Gestionar clientes")]
     public async Task<IActionResult> Crear(ClienteFormularioViewModel modelo)
     {
         if (!ModelState.IsValid)
@@ -57,6 +61,7 @@ public class ClientesController : Controller
         return RedirectToAction(nameof(Lista));
     }
 
+    [Permiso("Gestionar clientes")]
     public async Task<IActionResult> Editar(int id)
     {
         var cliente = await _baseDatos.Clientes.AsNoTracking().FirstOrDefaultAsync(item => item.id_cliente == id);
@@ -74,6 +79,7 @@ public class ClientesController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Permiso("Gestionar clientes")]
     public async Task<IActionResult> Editar(int id, ClienteFormularioViewModel modelo)
     {
         if (id != modelo.id_cliente) return BadRequest();
@@ -95,6 +101,7 @@ public class ClientesController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Permiso("Gestionar clientes")]
     public async Task<IActionResult> Eliminar(int id)
     {
         var cliente = await _baseDatos.Clientes.FirstOrDefaultAsync(item => item.id_cliente == id);

@@ -1,5 +1,9 @@
 @{
     var sesionIniciada = User.Identity?.IsAuthenticated == true;
+    var esAdministrador = User.IsInRole("Administrador");
+    var permisosUsuario = User.FindAll("permiso").Select(permiso => permiso.Value)
+        .ToHashSet(StringComparer.OrdinalIgnoreCase);
+    bool Puede(params string[] acciones) => esAdministrador || acciones.Any(permisosUsuario.Contains);
 }
 <!DOCTYPE html>
 <html lang="es">
@@ -24,13 +28,14 @@
                 </div>
                 <div class="texto-menu">MENÚ PRINCIPAL</div>
                 <nav class="navegacion">
-                    <a asp-controller="Inicio" asp-action="Tablero" class="enlace-menu"><span class="icono-enlace">▦</span><span class="texto-enlace">Tablero</span></a>
-                    <a asp-controller="Productos" asp-action="Lista" class="enlace-menu"><span class="icono-enlace">◫</span><span class="texto-enlace">Productos</span></a>
-                    <a asp-controller="Inventario" asp-action="Lista" class="enlace-menu"><span class="icono-enlace">▤</span><span class="texto-enlace">Inventario</span></a>
-                    <a asp-controller="Clientes" asp-action="Lista" class="enlace-menu"><span class="icono-enlace">♙</span><span class="texto-enlace">Clientes</span></a>
-                    <a asp-controller="Proveedores" asp-action="Lista" class="enlace-menu"><span class="icono-enlace">♧</span><span class="texto-enlace">Proveedores</span></a>
-                    <a asp-controller="Ventas" asp-action="Lista" class="enlace-menu"><span class="icono-enlace">↗</span><span class="texto-enlace">Ventas</span></a>
-                    <a asp-controller="Compras" asp-action="Lista" class="enlace-menu"><span class="icono-enlace">↙</span><span class="texto-enlace">Compras</span></a>
+                    @if (Puede("Gestionar usuarios")) { <a asp-controller="Inicio" asp-action="Tablero" class="enlace-menu"><span class="icono-enlace">▦</span><span class="texto-enlace">Tablero</span></a> }
+                    @if (Puede("Gestionar productos", "consultar productos")) { <a asp-controller="Productos" asp-action="Lista" class="enlace-menu"><span class="icono-enlace">◫</span><span class="texto-enlace">Productos</span></a> }
+                    @if (Puede("Consultar inventario", "Gestionar inventario")) { <a asp-controller="Inventario" asp-action="Lista" class="enlace-menu"><span class="icono-enlace">▤</span><span class="texto-enlace">Inventario</span></a> }
+                    @if (Puede("Consultar clientes", "Gestionar clientes", "Registrar clientes")) { <a asp-controller="Clientes" asp-action="Lista" class="enlace-menu"><span class="icono-enlace">♙</span><span class="texto-enlace">Clientes</span></a> }
+                    @if (Puede("Gestionar proveedores")) { <a asp-controller="Proveedores" asp-action="Lista" class="enlace-menu"><span class="icono-enlace">♧</span><span class="texto-enlace">Proveedores</span></a> }
+                    @if (Puede("Gestionar ventas", "Registrar ventas")) { <a asp-controller="Ventas" asp-action="Lista" class="enlace-menu"><span class="icono-enlace">↗</span><span class="texto-enlace">Ventas</span></a> }
+                    @if (Puede("Gestionar compras")) { <a asp-controller="Compras" asp-action="Lista" class="enlace-menu"><span class="icono-enlace">↙</span><span class="texto-enlace">Compras</span></a> }
+                    @if (Puede("Gestionar roles", "Gestionar permisos")) { <a asp-controller="Administracion" asp-action="Roles" class="enlace-menu"><span class="icono-enlace">⚙</span><span class="texto-enlace">Roles y permisos</span></a> }
                 </nav>
                 <div class="pie-lateral">
                     <div class="texto-pie-lateral">Sistema de gestión<br />Licorería El Chimbo</div>

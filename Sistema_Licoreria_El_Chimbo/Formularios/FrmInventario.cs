@@ -20,6 +20,17 @@ namespace Sistema_Licoreria_El_Chimbo.Formularios
 
             CargarProductos();
             ListarInventario();
+            var puedeGestionar = PermisosSesion.Tiene("Gestionar inventario");
+            btnGuardar.Visible = puedeGestionar;
+            btnEditar.Visible = puedeGestionar;
+            btnEliminar.Visible = puedeGestionar;
+            btnAjustarStock.Visible = PermisosSesion.Tiene("Ajustar stock");
+            btnHistorialStock.Visible = PermisosSesion.Tiene("Consultar movimientos de stock");
+            btnLimpiar.Visible = puedeGestionar;
+            cmbProducto.Enabled = puedeGestionar;
+            txtStockMinimo.ReadOnly = !puedeGestionar;
+            txtStockMaximo.ReadOnly = !puedeGestionar;
+            txtStockActual.ReadOnly = !puedeGestionar;
         }
 
         private void CargarProductos()
@@ -83,6 +94,11 @@ namespace Sistema_Licoreria_El_Chimbo.Formularios
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
+            if (!PermisosSesion.Tiene("Gestionar inventario"))
+            {
+                MessageBox.Show("Tu rol no tiene permiso para crear registros de inventario.");
+                return;
+            }
             if (cmbProducto.SelectedValue == null)
             {
                 MessageBox.Show(
@@ -201,6 +217,11 @@ namespace Sistema_Licoreria_El_Chimbo.Formularios
             object sender,
             EventArgs e)
         {
+            if (!PermisosSesion.Tiene("Gestionar inventario"))
+            {
+                MessageBox.Show("Tu rol no tiene permiso para editar el inventario.");
+                return;
+            }
             if (dgvInventario.CurrentRow == null)
             {
                 MessageBox.Show(
@@ -346,6 +367,11 @@ namespace Sistema_Licoreria_El_Chimbo.Formularios
             object sender,
             EventArgs e)
         {
+            if (!PermisosSesion.Tiene("Gestionar inventario"))
+            {
+                MessageBox.Show("Tu rol no tiene permiso para eliminar registros de inventario.");
+                return;
+            }
             if (dgvInventario.CurrentRow == null)
             {
                 MessageBox.Show(
@@ -389,6 +415,11 @@ namespace Sistema_Licoreria_El_Chimbo.Formularios
             object sender,
             EventArgs e)
         {
+            if (!PermisosSesion.Tiene("Ajustar stock"))
+            {
+                MessageBox.Show("Tu rol no tiene permiso para ajustar existencias.");
+                return;
+            }
             FrmAjustarStock formulario =
                 new FrmAjustarStock();
 
@@ -402,6 +433,11 @@ namespace Sistema_Licoreria_El_Chimbo.Formularios
             object sender,
             EventArgs e)
         {
+            if (!PermisosSesion.Tiene("Consultar movimientos de stock"))
+            {
+                MessageBox.Show("Tu rol no tiene permiso para consultar los movimientos de stock.");
+                return;
+            }
             FrmMovimientosStock formulario =
                 new FrmMovimientosStock();
 

@@ -49,6 +49,7 @@ namespace Sistema_Licoreria_El_Chimbo.Formularios
                 IdUsuarioActual = usuario.IdUsuario;
                 IdRolActual = usuario.IdRol;
                 NombreUsuarioActual = usuario.NombreUsuario;
+                PermisosSesion.Recargar();
 
                 MessageBox.Show("Bienvenido, " + usuario.NombreUsuario);
 

@@ -91,6 +91,7 @@
     <Compile Include="Formularios\FrmLogin.cs.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Seguridad\PermisosSesion.cs" />
     <Compile Include="Formularios\FrmLogin.cs.Designer.cs">
       <DependentUpon>FrmLogin.cs.cs</DependentUpon>
     </Compile>

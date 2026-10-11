@@ -56,6 +56,12 @@ public class AccesoController : Controller
             new(ClaimTypes.Name, usuario.nombre_usuario),
             new(ClaimTypes.Role, usuario.id_rolNavigation.nombre_rol)
         };
+        var permisos = await _baseDatos.Permisos.AsNoTracking()
+            .Where(permiso => permiso.id_rol == usuario.id_rol)
+            .Select(permiso => permiso.accion)
+            .ToListAsync();
+        afirmaciones.AddRange(permisos.Distinct(StringComparer.OrdinalIgnoreCase)
+            .Select(permiso => new Claim("permiso", permiso)));
         var identidad = new ClaimsIdentity(afirmaciones, CookieAuthenticationDefaults.AuthenticationScheme);
         await HttpContext.SignInAsync(
             CookieAuthenticationDefaults.AuthenticationScheme,
@@ -64,7 +70,23 @@ public class AccesoController : Controller
 
         if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
             return LocalRedirect(returnUrl);
-        return RedirectToAction("Tablero", "Inicio");
+        if (string.Equals(usuario.id_rolNavigation.nombre_rol, "Administrador", StringComparison.OrdinalIgnoreCase) ||
+            permisos.Contains("Gestionar usuarios", StringComparer.OrdinalIgnoreCase))
+            return RedirectToAction("Tablero", "Inicio");
+        if (permisos.Contains("Registrar ventas", StringComparer.OrdinalIgnoreCase) ||
+            permisos.Contains("Gestionar ventas", StringComparer.OrdinalIgnoreCase))
+            return RedirectToAction("Lista", "Ventas");
+        if (permisos.Contains("consultar productos", StringComparer.OrdinalIgnoreCase) ||
+            permisos.Contains("Gestionar productos", StringComparer.OrdinalIgnoreCase))
+            return RedirectToAction("Lista", "Productos");
+        if (permisos.Contains("Consultar inventario", StringComparer.OrdinalIgnoreCase) ||
+            permisos.Contains("Gestionar inventario", StringComparer.OrdinalIgnoreCase))
+            return RedirectToAction("Lista", "Inventario");
+        if (permisos.Contains("Consultar clientes", StringComparer.OrdinalIgnoreCase) ||
+            permisos.Contains("Registrar clientes", StringComparer.OrdinalIgnoreCase) ||
+            permisos.Contains("Gestionar clientes", StringComparer.OrdinalIgnoreCase))
+            return RedirectToAction("Lista", "Clientes");
+        return RedirectToAction(nameof(Denegado));
     }
 
     [Authorize]

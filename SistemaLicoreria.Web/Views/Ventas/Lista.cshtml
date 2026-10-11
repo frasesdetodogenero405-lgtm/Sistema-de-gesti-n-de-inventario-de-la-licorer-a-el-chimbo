@@ -2,17 +2,18 @@
 @{
     ViewData["Title"] = "Ventas";
     ViewData["Seccion"] = "Ventas";
+    var puedeRegistrar = User.IsInRole("Administrador") || User.HasClaim("permiso", "Registrar ventas") || User.HasClaim("permiso", "Gestionar ventas");
 }
 <section class="encabezado-pagina">
     <div><p class="sobre-titulo">OPERACIONES</p><h1>Ventas</h1><p class="texto-secundario">Consulta el historial y registra nuevas ventas.</p></div>
-    <a asp-action="Crear" class="boton-principal">＋ Registrar venta</a>
+    @if (puedeRegistrar) { <a asp-action="Crear" class="boton-principal">＋ Registrar venta</a> }
 </section>
 @if (TempData["Mensaje"] is string mensaje) { <div class="alert alert-success">@mensaje</div> }
 <section class="panel panel-tabla">
     <div class="panel-encabezado"><div><h2>Ventas registradas</h2><p>Se muestran las últimas 100 operaciones.</p></div></div>
     @if (Model.Count == 0)
     {
-        <div class="estado-vacio"><span>↗</span><strong>Aún no hay ventas</strong><small>Usa “Registrar venta” para guardar la primera.</small></div>
+        <div class="estado-vacio"><span>↗</span><strong>Aún no hay ventas</strong>@if (puedeRegistrar) { <small>Usa “Registrar venta” para guardar la primera.</small> }</div>
     }
     else
     {

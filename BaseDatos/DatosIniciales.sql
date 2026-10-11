@@ -3,6 +3,44 @@ GO
 
 IF NOT EXISTS (SELECT 1 FROM [Roles_Usuarios] WHERE [nombre_rol] = 'Administrador')
     INSERT INTO [Roles_Usuarios] ([nombre_rol]) VALUES ('Administrador');
+IF NOT EXISTS (SELECT 1 FROM [Roles_Usuarios] WHERE [nombre_rol] = 'Cajero')
+    INSERT INTO [Roles_Usuarios] ([nombre_rol]) VALUES ('Cajero');
+
+DECLARE @IdRolAdminPermisos INT = (SELECT TOP (1) [id_rol] FROM [Roles_Usuarios] WHERE [nombre_rol] = 'Administrador' ORDER BY [id_rol]);
+DECLARE @IdRolCajeroPermisos INT = (SELECT TOP (1) [id_rol] FROM [Roles_Usuarios] WHERE [nombre_rol] = 'Cajero' ORDER BY [id_rol]);
+DECLARE @PermisosAdministrador TABLE ([accion] VARCHAR(100) NOT NULL);
+DECLARE @PermisosCajero TABLE ([accion] VARCHAR(100) NOT NULL);
+
+INSERT INTO @PermisosAdministrador ([accion]) VALUES
+    ('Ajustar stock'), ('Consultar movimientos de stock'), ('Gestionar categorías'),
+    ('Gestionar clientes'), ('Gestionar compras'), ('Gestionar inventario'),
+    ('Gestionar marcas'), ('Gestionar métodos de pago'), ('Gestionar permisos'),
+    ('Gestionar productos'), ('Gestionar proveedores'), ('Gestionar roles'),
+    ('Gestionar usuarios'), ('Gestionar ventas'), ('Consultar clientes'),
+    ('Consultar inventario'), ('consultar productos'), ('Registrar clientes'),
+    ('Registrar ventas'), ('Usar métodos de pago');
+
+INSERT INTO @PermisosCajero ([accion]) VALUES
+    ('Consultar clientes'), ('Consultar inventario'), ('consultar productos'),
+    ('Registrar clientes'), ('Registrar ventas'), ('Usar métodos de pago');
+
+INSERT INTO [Permisos] ([id_rol], [accion])
+SELECT @IdRolAdminPermisos, [catalogo].[accion]
+FROM @PermisosAdministrador AS [catalogo]
+WHERE NOT EXISTS (
+    SELECT 1 FROM [Permisos] AS [existente]
+    WHERE [existente].[id_rol] = @IdRolAdminPermisos
+      AND LOWER([existente].[accion]) = LOWER([catalogo].[accion])
+);
+
+INSERT INTO [Permisos] ([id_rol], [accion])
+SELECT @IdRolCajeroPermisos, [catalogo].[accion]
+FROM @PermisosCajero AS [catalogo]
+WHERE NOT EXISTS (
+    SELECT 1 FROM [Permisos] AS [existente]
+    WHERE [existente].[id_rol] = @IdRolCajeroPermisos
+      AND LOWER([existente].[accion]) = LOWER([catalogo].[accion])
+);
 
 IF NOT EXISTS (SELECT 1 FROM [Categorias_Productos] WHERE [nombre_categoria] = 'Licores')
     INSERT INTO [Categorias_Productos] ([nombre_categoria]) VALUES ('Licores');

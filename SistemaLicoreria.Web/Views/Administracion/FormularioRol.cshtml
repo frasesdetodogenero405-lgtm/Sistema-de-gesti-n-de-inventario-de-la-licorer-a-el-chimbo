@@ -1,0 +1,39 @@
+@model SistemaLicoreria.Web.ModelosVista.RolFormularioViewModel
+@{
+    var editar = Model.id_rol.HasValue;
+    var rolAdministrador = editar && Model.nombre_rol.Equals("Administrador", StringComparison.OrdinalIgnoreCase);
+    ViewData["Title"] = editar ? "Editar rol" : "Crear rol";
+    ViewData["Seccion"] = "Administración";
+}
+<section class="encabezado-pagina">
+    <div><p class="sobre-titulo">SEGURIDAD</p><h1>@(editar ? "Editar rol" : "Crear rol")</h1><p class="texto-secundario">Marca los permisos que tendrá este rol.</p></div>
+</section>
+<form asp-action="EditarRol" method="post" class="panel panel-formulario panel-roles">
+    <input asp-for="id_rol" type="hidden" />
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+    <div class="campo-formulario">
+        <label asp-for="nombre_rol"></label>
+        <input asp-for="nombre_rol" class="form-control" readonly="@(rolAdministrador ? "readonly" : null)" />
+        <span asp-validation-for="nombre_rol" class="texto-error"></span>
+        @if (rolAdministrador) { <small>El administrador siempre conserva acceso completo al sistema.</small> }
+    </div>
+    <div class="encabezado-detalles"><div><h2>Permisos del rol</h2><p>Los permisos se verifican también en el servidor.</p></div></div>
+    <span asp-validation-for="permisos_seleccionados" class="texto-error"></span>
+    <div class="rejilla-permisos">
+        @foreach (var grupo in Model.permisos_disponibles.GroupBy(permiso => permiso.modulo))
+        {
+            <fieldset class="grupo-permisos">
+                <legend>@grupo.Key</legend>
+                @foreach (var permiso in grupo)
+                {
+                    var seleccionado = Model.permisos_seleccionados.Contains(permiso.accion, StringComparer.OrdinalIgnoreCase);
+                    <label class="opcion-permiso">
+                        <input type="checkbox" name="permisos_seleccionados" value="@permiso.accion" checked="@(seleccionado ? "checked" : null)" />
+                        <span><strong>@permiso.accion</strong><small>@permiso.descripcion</small></span>
+                    </label>
+                }
+            </fieldset>
+        }
+    </div>
+    <div class="botones-formulario"><a asp-action="Roles" class="boton-secundario">Cancelar</a><button type="submit" class="boton-principal">Guardar rol</button></div>
+</form>

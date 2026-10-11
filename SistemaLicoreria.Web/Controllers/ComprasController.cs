@@ -6,9 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using SistemaLicoreria.Web.Datos;
 using SistemaLicoreria.Web.Modelos;
 using SistemaLicoreria.Web.ModelosVista;
+using SistemaLicoreria.Web.Seguridad;
 
 namespace SistemaLicoreria.Web.Controllers;
 
+[Permiso("Gestionar compras")]
 public class ComprasController : Controller
 {
     private readonly LicoreriaContexto _baseDatos;

@@ -2,10 +2,12 @@
 @{
     ViewData["Title"] = "Clientes";
     ViewData["Seccion"] = "Clientes";
+    var puedeRegistrar = User.IsInRole("Administrador") || User.HasClaim("permiso", "Registrar clientes") || User.HasClaim("permiso", "Gestionar clientes");
+    var puedeGestionar = User.IsInRole("Administrador") || User.HasClaim("permiso", "Gestionar clientes");
 }
 <section class="encabezado-pagina">
     <div><p class="sobre-titulo">DIRECTORIO</p><h1>Clientes</h1><p class="texto-secundario">Consulta y actualiza la información de tus clientes.</p></div>
-    <a asp-action="Crear" class="boton-principal">＋ Agregar cliente</a>
+    @if (puedeRegistrar) { <a asp-action="Crear" class="boton-principal">＋ Agregar cliente</a> }
 </section>
 @if (TempData["Mensaje"] is string mensaje) { <div class="alert alert-success">@mensaje</div> }
 @if (TempData["Error"] is string error) { <div class="alert alert-danger">@error</div> }
@@ -23,10 +25,10 @@
     else
     {
         <div class="tabla-responsiva"><table class="tabla-sistema">
-            <thead><tr><th>Nombre</th><th>Teléfono</th><th>Dirección</th><th class="texto-derecha">Acciones</th></tr></thead>
+            <thead><tr><th>Nombre</th><th>Teléfono</th><th>Dirección</th>@if (puedeGestionar) { <th class="texto-derecha">Acciones</th> }</tr></thead>
             <tbody>@foreach (var cliente in Model)
             {
-                <tr><td><strong>@cliente.nombre_cliente</strong></td><td>@(cliente.telefono ?? "—")</td><td>@(cliente.direccion ?? "—")</td><td class="texto-derecha"><div class="acciones-tabla"><a asp-action="Editar" asp-route-id="@cliente.id_cliente" class="accion-enlace">Editar</a><form asp-action="Eliminar" asp-route-id="@cliente.id_cliente" method="post" onsubmit="return confirm('¿Eliminar este cliente?');"><button type="submit" class="accion-enlace accion-eliminar">Eliminar</button></form></div></td></tr>
+                <tr><td><strong>@cliente.nombre_cliente</strong></td><td>@(cliente.telefono ?? "—")</td><td>@(cliente.direccion ?? "—")</td>@if (puedeGestionar) { <td class="texto-derecha"><div class="acciones-tabla"><a asp-action="Editar" asp-route-id="@cliente.id_cliente" class="accion-enlace">Editar</a><form asp-action="Eliminar" asp-route-id="@cliente.id_cliente" method="post" onsubmit="return confirm('¿Eliminar este cliente?');"><button type="submit" class="accion-enlace accion-eliminar">Eliminar</button></form></div></td> }</tr>
             }</tbody>
         </table></div>
     }

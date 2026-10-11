@@ -34,6 +34,9 @@ a { color: inherit; }
 .boton-sesion-lateral { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 8px; border: 1px solid #3b4667; border-radius: 7px; color: #e1e7f5; background: #202b4b; font: inherit; font-size: 11px; cursor: pointer; }
 .boton-sesion-lateral:hover { border-color: #64729a; color: #fff; background: #29365d; }
 .boton-sesion-lateral span { font-size: 16px; }
+.formulario-asignar-rol { display: flex; align-items: center; gap: 8px; }
+.formulario-asignar-rol .form-select { max-width: 230px; min-height: 34px; font-size: 11px; }
+.formulario-asignar-rol .boton-secundario { cursor: pointer; }
 .contenido-aplicacion { min-height: 100vh; margin-left: 246px; display: flex; flex-direction: column; }
 .barra-superior { height: 68px; display: flex; align-items: center; justify-content: space-between; padding: 0 38px; background: var(--blanco); border-bottom: 1px solid var(--borde); }
 .ruta-pagina { color: var(--texto); font-size: 12px; }
@@ -133,6 +136,16 @@ h1 { margin: 0; color: var(--tinta); font-size: clamp(24px, 3vw, 29px); font-wei
 .botones-formulario { display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px; padding-top: 18px; border-top: 1px solid var(--borde); }
 .botones-formulario .boton-secundario { padding: 10px 14px; font-size: 12px; }
 .panel-formulario-ancho { max-width: 1120px; }
+.panel-roles { max-width: 1120px; }
+.rejilla-permisos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 14px; }
+.grupo-permisos { min-width: 0; margin: 0; padding: 14px; border: 1px solid var(--borde); border-radius: 8px; }
+.grupo-permisos legend { float: none; width: auto; margin: 0 0 8px; padding: 0 5px; color: var(--azul-oscuro); font-size: 12px; font-weight: 700; }
+.opcion-permiso { display: flex; align-items: flex-start; gap: 9px; padding: 9px 7px; border-radius: 6px; cursor: pointer; }
+.opcion-permiso:hover { background: #f6f8fc; }
+.opcion-permiso input { flex: 0 0 auto; width: 16px; height: 16px; margin-top: 2px; accent-color: var(--azul); }
+.opcion-permiso strong, .opcion-permiso small { display: block; }
+.opcion-permiso strong { color: #424c61; font-size: 11px; }
+.opcion-permiso small { margin-top: 3px; color: #8991a3; font-size: 10px; line-height: 1.4; }
 .encabezado-detalles { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 25px 0 13px; padding-top: 20px; border-top: 1px solid var(--borde); }
 .encabezado-detalles h2 { margin: 0; font-size: 14px; font-weight: 700; }
 .encabezado-detalles p { margin: 5px 0 0; color: #9299a9; font-size: 11px; }
@@ -179,6 +192,7 @@ h1 { margin: 0; color: var(--tinta); font-size: clamp(24px, 3vw, 29px); font-wei
     .barra-busqueda label { width: 100%; }
     .barra-busqueda input { flex: 1; min-width: 160px; }
     .rejilla-formulario { grid-template-columns: 1fr; }
+    .rejilla-permisos { grid-template-columns: 1fr; }
     .campo-completo { grid-column: auto; }
     .fila-detalle, .fila-compra { grid-template-columns: minmax(0, 1fr) 90px 34px; }
     .fila-detalle .campo-producto { grid-column: 1 / -1; }

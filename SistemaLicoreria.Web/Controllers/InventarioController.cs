@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SistemaLicoreria.Web.Datos;
+using SistemaLicoreria.Web.Seguridad;
 
 namespace SistemaLicoreria.Web.Controllers;
 
@@ -13,6 +14,7 @@ public class InventarioController : Controller
         _baseDatos = baseDatos;
     }
 
+    [Permiso("Consultar inventario", "Gestionar inventario")]
     public async Task<IActionResult> Lista()
     {
         ViewData["Title"] = "Inventario";

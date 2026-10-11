@@ -20,6 +20,15 @@ namespace Sistema_Licoreria_El_Chimbo.Formularios
         {
             InitializeComponent();
             ListarClientes();
+            var puedeRegistrar = PermisosSesion.Tiene("Registrar clientes", "Gestionar clientes");
+            var puedeGestionar = PermisosSesion.Tiene("Gestionar clientes");
+            btnRegistrar.Visible = puedeRegistrar;
+            btnEditar.Visible = puedeGestionar;
+            btnEliminar.Visible = puedeGestionar;
+            btnLimpiar.Visible = puedeRegistrar;
+            txtNombre.ReadOnly = !puedeRegistrar;
+            txtTelefono.ReadOnly = !puedeRegistrar;
+            txtDireccion.ReadOnly = !puedeRegistrar;
         }
         private void ListarClientes()
         {
@@ -38,6 +47,11 @@ namespace Sistema_Licoreria_El_Chimbo.Formularios
 
         private void btnRegistrar_Click(object sender, EventArgs e)
         {
+            if (!PermisosSesion.Tiene("Registrar clientes", "Gestionar clientes"))
+            {
+                MessageBox.Show("Tu rol no tiene permiso para registrar clientes.");
+                return;
+            }
             Cliente cliente = new Cliente();
 
             cliente.NombreCliente = txtNombre.Text;
@@ -74,6 +88,11 @@ namespace Sistema_Licoreria_El_Chimbo.Formularios
 
         private void btnEditar_Click(object sender, EventArgs e)
         {
+            if (!PermisosSesion.Tiene("Gestionar clientes"))
+            {
+                MessageBox.Show("Tu rol no tiene permiso para editar clientes.");
+                return;
+            }
             if (idClienteSeleccionado == 0)
             {
                 MessageBox.Show("Seleccione un cliente para editar.");
@@ -107,6 +126,11 @@ namespace Sistema_Licoreria_El_Chimbo.Formularios
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
+            if (!PermisosSesion.Tiene("Gestionar clientes"))
+            {
+                MessageBox.Show("Tu rol no tiene permiso para eliminar clientes.");
+                return;
+            }
             if (idClienteSeleccionado == 0)
             {
                 MessageBox.Show("Seleccione un cliente para eliminar.");

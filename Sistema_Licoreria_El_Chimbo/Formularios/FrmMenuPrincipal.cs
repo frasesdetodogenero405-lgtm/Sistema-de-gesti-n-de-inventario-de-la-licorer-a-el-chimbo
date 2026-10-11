@@ -67,7 +67,18 @@ namespace Sistema_Licoreria_El_Chimbo.Formularios
 
         private void FrmMenuPrincipal_Load(object sender, EventArgs e)
         {
-
+            btnProductos.Visible = PermisosSesion.Tiene("Gestionar productos", "consultar productos");
+            btnMarcas.Visible = PermisosSesion.Tiene("Gestionar marcas");
+            btnProveedores.Visible = PermisosSesion.Tiene("Gestionar proveedores");
+            btnClientes.Visible = PermisosSesion.Tiene("Consultar clientes", "Registrar clientes", "Gestionar clientes");
+            btnInventario.Visible = PermisosSesion.Tiene("Consultar inventario", "Gestionar inventario", "Ajustar stock", "Consultar movimientos de stock");
+            btnCompras.Visible = PermisosSesion.Tiene("Gestionar compras");
+            btnVentas.Visible = PermisosSesion.Tiene("Gestionar ventas", "Registrar ventas");
+            btnMetodosPago.Visible = PermisosSesion.Tiene("Gestionar métodos de pago");
+            btnRoles.Visible = PermisosSesion.Tiene("Gestionar roles");
+            btnUsuarios.Visible = PermisosSesion.Tiene("Gestionar usuarios");
+            btnPermisos.Visible = PermisosSesion.Tiene("Gestionar permisos");
+            btnCategorias_productos.Visible = PermisosSesion.Tiene("Gestionar categorías");
         }
 
         private void btnRoles_Click(object sender, EventArgs e)

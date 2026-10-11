@@ -1,0 +1,35 @@
+@model IReadOnlyList<SistemaLicoreria.Web.ModelosVista.RolListaViewModel>
+@{
+    ViewData["Title"] = "Roles y permisos";
+    ViewData["Seccion"] = "Administración";
+}
+<section class="encabezado-pagina">
+    <div><p class="sobre-titulo">SEGURIDAD</p><h1>Roles y permisos</h1><p class="texto-secundario">Define qué módulos puede consultar o administrar cada tipo de usuario.</p></div>
+    <div class="acciones-tabla"><a asp-action="Usuarios" class="boton-secundario">Asignar roles a usuarios</a><a asp-action="EditarRol" class="boton-principal">＋ Crear rol</a></div>
+</section>
+@if (TempData["Mensaje"] is string mensaje) { <div class="alert alert-success">@mensaje</div> }
+@if (TempData["Error"] is string error) { <div class="alert alert-danger">@error</div> }
+<section class="panel panel-tabla">
+    <div class="tabla-responsiva"><table class="tabla-sistema">
+        <thead><tr><th>Rol</th><th>Usuarios asignados</th><th>Permisos</th><th class="texto-derecha">Acciones</th></tr></thead>
+        <tbody>
+        @foreach (var rol in Model)
+        {
+            <tr>
+                <td><strong>@rol.nombre_rol</strong>@if (rol.nombre_rol.Equals("Administrador", StringComparison.OrdinalIgnoreCase)) { <span class="etiqueta-estado estado-normal">Acceso completo</span> }</td>
+                <td>@rol.cantidad_usuarios</td>
+                <td>@rol.cantidad_permisos</td>
+                <td class="texto-derecha"><div class="acciones-tabla">
+                    <a asp-action="EditarRol" asp-route-id="@rol.id_rol" class="accion-enlace">Editar permisos</a>
+                    @if (!rol.nombre_rol.Equals("Administrador", StringComparison.OrdinalIgnoreCase))
+                    {
+                        <form asp-action="EliminarRol" asp-route-id="@rol.id_rol" method="post" onsubmit="return confirm('¿Eliminar el rol @rol.nombre_rol?');">
+                            <button type="submit" class="accion-enlace accion-eliminar">Eliminar</button>
+                        </form>
+                    }
+                </div></td>
+            </tr>
+        }
+        </tbody>
+    </table></div>
+</section>
